@@ -47,101 +47,134 @@ export function PlasmidWorkspace({ selectedCDS, onCDSSelect, onClearCDS, isSimul
       </CardHeader>
       
       <CardContent className="flex-1 flex flex-col items-center justify-center space-y-6">
-        {/* Linear Plasmid Backbone */}
-        <div className="w-full max-w-lg">
-          {/* Backbone representation with slots */}
-          <div className="relative">
-            {/* Main backbone line */}
-            <div className="h-3 bg-primary rounded-full relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/80 via-primary to-primary/80"></div>
-            </div>
-            
-            {/* Feature markers along backbone */}
-            <div className="absolute -top-2 left-12 w-2 h-2 bg-accent rounded-full border-2 border-foreground"></div>
-            <div className="absolute -top-7 left-10 text-xs font-medium text-muted-foreground">ORI</div>
-            
-            <div className="absolute -top-2 right-12 w-2 h-2 bg-accent rounded-full border-2 border-foreground"></div>
-            <div className="absolute -top-7 right-8 text-xs font-medium text-muted-foreground">Term</div>
-            
-            <div className="absolute -bottom-2 right-20 w-2 h-2 bg-accent rounded-full border-2 border-foreground"></div>
-            <div className="absolute bottom-4 right-16 text-xs font-medium text-muted-foreground">CmR</div>
-          </div>
-        </div>
-        
-        {/* CDS Drop Zone Slot */}
-        <div
+        {/* Circular Plasmid Backbone */}
+        <div 
           ref={dropZoneRef}
           className={cn(
-            "relative border-2 border-dashed rounded-xl p-8 transition-all duration-300 min-h-[140px] w-full max-w-md flex items-center justify-center",
-            selectedCDS 
-              ? "border-primary bg-primary/10 shadow-lg" 
-              : isDragOver 
-                ? "border-primary bg-primary/20 shadow-xl scale-105 animate-pulse" 
-                : "border-border bg-accent/30",
-            !isSimulating && !selectedCDS && "hover:border-primary/50 hover:bg-accent/40"
+            "relative transition-all duration-300",
+            isDragOver && "scale-105"
           )}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
         >
-          {selectedCDS ? (
-            <div className="text-center space-y-3">
-              {/* Protein visualization */}
-              <div 
-                className="w-20 h-20 rounded-full mx-auto flex items-center justify-center text-white font-bold text-lg shadow-lg border-4 border-white/20"
-                style={{ 
-                  backgroundColor: selectedCDS.color,
-                  boxShadow: `0 0 20px ${selectedCDS.color}40`
-                }}
-              >
-                {selectedCDS.name}
-              </div>
-              
-              {/* Protein info */}
-              <div>
-                <h3 className="font-semibold text-foreground text-lg">{selectedCDS.fullName}</h3>
-                <p className="text-sm text-muted-foreground mt-1 max-w-xs">{selectedCDS.description}</p>
-              </div>
-              
-              {/* Remove button */}
-              {!isSimulating && (
-                <Button
-                  variant="destructive"
-                  size="sm"
-                  className="mt-4"
-                  onClick={onClearCDS}
-                >
-                  <X className="h-4 w-4 mr-1" />
-                  Remove CDS
-                </Button>
+          <svg width="300" height="300" viewBox="0 0 300 300" className="drop-shadow-lg">
+            {/* Circular backbone */}
+            <circle
+              cx="150"
+              cy="150"
+              r="120"
+              fill="none"
+              stroke="hsl(var(--primary))"
+              strokeWidth="8"
+              className={cn(
+                "transition-all duration-300",
+                selectedCDS && "stroke-primary/80",
+                isDragOver && "stroke-primary animate-pulse"
               )}
-            </div>
-          ) : (
-            <div className="text-center space-y-3">
-              {/* Empty slot indicator */}
-              <div className={cn(
-                "w-20 h-20 rounded-full border-2 border-dashed mx-auto flex items-center justify-center text-muted-foreground transition-all duration-300",
-                isDragOver && "border-primary text-primary scale-110 border-solid bg-primary/10"
-              )}>
-                <span className="text-sm font-medium">CDS</span>
-              </div>
-              
-              <div>
-                <p className="text-lg font-medium text-muted-foreground">
-                  {isDragOver ? "Drop CDS Here!" : "CDS Insertion Site"}
-                </p>
-                <p className="text-sm text-muted-foreground/80">
-                  {isDragOver ? "Release to place CDS" : "Drag a coding sequence from the Parts Bin"}
-                </p>
-              </div>
-            </div>
-          )}
+            />
+            
+            {/* Origin of Replication (ORI) marker */}
+            <g>
+              <circle
+                cx="150"
+                cy="30"
+                r="6"
+                fill="hsl(var(--accent))"
+                stroke="hsl(var(--foreground))"
+                strokeWidth="2"
+              />
+              <text
+                x="150"
+                y="20"
+                textAnchor="middle"
+                className="fill-muted-foreground text-xs font-medium"
+              >
+                ORI
+              </text>
+            </g>
+            
+            {/* CDS Arrow (when selected) */}
+            {selectedCDS && (
+              <g className="animate-scale-in">
+                {/* Arrow path - positioned at top right */}
+                <path
+                  d="M 200 80 L 240 100 L 230 110 L 200 95 L 170 110 L 180 100 Z"
+                  fill={selectedCDS.color}
+                  stroke="white"
+                  strokeWidth="2"
+                  className="drop-shadow-md"
+                  style={{ 
+                    filter: `drop-shadow(0 0 8px ${selectedCDS.color}60)`
+                  }}
+                />
+                {/* CDS label */}
+                <text
+                  x="205"
+                  y="70"
+                  textAnchor="middle"
+                  className="fill-foreground text-xs font-bold"
+                >
+                  {selectedCDS.name}
+                </text>
+              </g>
+            )}
+            
+            {/* Drag feedback overlay */}
+            {isDragOver && !selectedCDS && (
+              <circle
+                cx="150"
+                cy="150"
+                r="120"
+                fill="hsl(var(--primary) / 0.1)"
+                stroke="hsl(var(--primary))"
+                strokeWidth="4"
+                strokeDasharray="10,5"
+                className="animate-pulse"
+              />
+            )}
+          </svg>
           
-          {/* Glowing effect when dragging */}
-          {isDragOver && (
-            <div className="absolute inset-0 rounded-xl bg-primary/10 border-2 border-primary animate-pulse"></div>
+          {/* Center instructions */}
+          {!selectedCDS && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="text-center space-y-2 bg-background/80 rounded-lg p-4 backdrop-blur-sm">
+                <p className={cn(
+                  "text-sm font-medium transition-colors",
+                  isDragOver ? "text-primary" : "text-muted-foreground"
+                )}>
+                  {isDragOver ? "Drop CDS Here!" : "Drag CDS to Plasmid"}
+                </p>
+                <p className="text-xs text-muted-foreground/70">
+                  pSB1C3 BioBrick Plasmid
+                </p>
+              </div>
+            </div>
           )}
         </div>
+        
+        {/* CDS Information Panel */}
+        {selectedCDS && (
+          <div className="text-center space-y-3 animate-fade-in">
+            <div>
+              <h3 className="font-semibold text-foreground text-lg">{selectedCDS.fullName}</h3>
+              <p className="text-sm text-muted-foreground mt-1 max-w-xs mx-auto">{selectedCDS.description}</p>
+            </div>
+            
+            {/* Remove button */}
+            {!isSimulating && (
+              <Button
+                variant="destructive"
+                size="sm"
+                className="mt-4"
+                onClick={onClearCDS}
+              >
+                <X className="h-4 w-4 mr-1" />
+                Remove CDS
+              </Button>
+            )}
+          </div>
+        )}
         
         {/* Status indicator */}
         <div className="text-center">

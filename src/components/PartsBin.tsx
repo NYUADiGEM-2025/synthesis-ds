@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 
 interface PartsBinProps {
-  selectedCDS: CDSOption | null;
+  selectedCDS: CDSOption[];
   onCDSSelect: (cds: CDSOption) => void;
   isSimulating: boolean;
   onDragStart: (cds: CDSOption) => void;
@@ -42,7 +42,7 @@ export function PartsBin({ selectedCDS, onCDSSelect, isSimulating, onDragStart, 
         {CDS_OPTIONS.map((cds) => (
           <div
             key={cds.id}
-            draggable={!isSimulating && !selectedCDS}
+            draggable={!isSimulating && selectedCDS.length < 4}
             onDragStart={(e) => handleDragStart(e, cds)}
             onDragEnd={handleDragEnd}
             className={cn(
@@ -55,16 +55,16 @@ export function PartsBin({ selectedCDS, onCDSSelect, isSimulating, onDragStart, 
               variant="outline"
               className={cn(
                 "w-full p-4 h-auto flex-col items-start text-left transition-all duration-200 relative",
-                selectedCDS?.id === cds.id && "border-primary bg-primary/10 shadow-md",
+                selectedCDS.find(selected => selected.id === cds.id) && "border-primary bg-primary/10 shadow-md",
                 isSimulating && "opacity-50 cursor-not-allowed",
-                !isSimulating && !selectedCDS && "hover:bg-accent/50 hover:scale-[1.02] hover:shadow-lg",
-                !isSimulating && selectedCDS && selectedCDS.id !== cds.id && "opacity-60"
+                !isSimulating && selectedCDS.length < 4 && !selectedCDS.find(selected => selected.id === cds.id) && "hover:bg-accent/50 hover:scale-[1.02] hover:shadow-lg",
+                !isSimulating && selectedCDS.find(selected => selected.id === cds.id) && "opacity-60"
               )}
-              onClick={() => !isSimulating && !selectedCDS && onCDSSelect(cds)}
-              disabled={isSimulating || !!selectedCDS}
+              onClick={() => !isSimulating && selectedCDS.length < 4 && !selectedCDS.find(selected => selected.id === cds.id) && onCDSSelect(cds)}
+              disabled={isSimulating || selectedCDS.length >= 4 || !!selectedCDS.find(selected => selected.id === cds.id)}
             >
               {/* Drag indicator */}
-              {!isSimulating && !selectedCDS && (
+              {!isSimulating && selectedCDS.length < 4 && !selectedCDS.find(selected => selected.id === cds.id) && (
                 <div className="absolute top-2 right-2 text-muted-foreground/50">
                   <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
                     <circle cx="2" cy="2" r="1"/>
@@ -94,7 +94,7 @@ export function PartsBin({ selectedCDS, onCDSSelect, isSimulating, onDragStart, 
               <div className="text-sm text-muted-foreground mb-1">{cds.fullName}</div>
               <div className="text-xs text-muted-foreground/80 leading-relaxed">{cds.description}</div>
               
-              {selectedCDS?.id === cds.id && (
+              {selectedCDS.find(selected => selected.id === cds.id) && (
                 <div className="absolute -top-1 -right-1 w-3 h-3 bg-primary rounded-full border-2 border-background"></div>
               )}
             </Button>

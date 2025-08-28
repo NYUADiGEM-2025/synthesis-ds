@@ -7,7 +7,7 @@ import { CDSOption, SimulationState, ANIMATION_STEPS } from "@/types/central-dog
 import { useToast } from "@/hooks/use-toast";
 
 export function CentralDogmaSimulator() {
-  const [selectedCDS, setSelectedCDS] = useState<CDSOption | null>(null);
+  const [selectedCDS, setSelectedCDS] = useState<CDSOption[]>([]);
   const [draggingCDS, setDraggingCDS] = useState<CDSOption | null>(null);
   const [simulationState, setSimulationState] = useState<SimulationState>({
     isActive: false,
@@ -19,10 +19,10 @@ export function CentralDogmaSimulator() {
   const { toast } = useToast();
 
   const handleCDSSelect = useCallback((cds: CDSOption) => {
-    if (!selectedCDS) {
-      setSelectedCDS(cds);
+    if (selectedCDS.length < 4 && !selectedCDS.find(existing => existing.id === cds.id)) {
+      setSelectedCDS(prev => [...prev, cds]);
       toast({
-        title: "CDS Placed",
+        title: "CDS Added",
         description: `${cds.fullName} added to plasmid workspace`,
       });
     }
@@ -36,16 +36,25 @@ export function CentralDogmaSimulator() {
     setDraggingCDS(null);
   }, []);
 
-  const handleClearCDS = useCallback(() => {
-    setSelectedCDS(null);
-    toast({
-      title: "CDS Removed",
-      description: "Plasmid is now empty",
-    });
-  }, [toast]);
+  const handleClearCDS = useCallback((index?: number) => {
+    if (typeof index === 'number') {
+      const removedCDS = selectedCDS[index];
+      setSelectedCDS(prev => prev.filter((_, i) => i !== index));
+      toast({
+        title: "CDS Removed",
+        description: `${removedCDS.fullName} removed from plasmid`,
+      });
+    } else {
+      setSelectedCDS([]);
+      toast({
+        title: "All CDS Removed",
+        description: "Plasmid is now empty",
+      });
+    }
+  }, [selectedCDS, toast]);
 
   const handleStartSimulation = useCallback(() => {
-    if (!selectedCDS) return;
+    if (selectedCDS.length === 0) return;
     
     setSimulationState({
       isActive: true,
@@ -107,7 +116,7 @@ export function CentralDogmaSimulator() {
         // Simulation complete
         toast({
           title: "Simulation Complete!",
-          description: `${selectedCDS?.fullName} has been successfully expressed!`,
+          description: `${selectedCDS.length > 1 ? 'Multiple proteins' : selectedCDS[0]?.fullName} successfully expressed!`,
         });
         
         return {

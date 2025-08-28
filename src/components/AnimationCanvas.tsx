@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { CDSOption, SimulationState } from "@/types/central-dogma";
 
 interface AnimationCanvasProps {
-  selectedCDS: CDSOption | null;
+  selectedCDS: CDSOption[];
   simulationState: SimulationState;
   onStepComplete: () => void;
 }
@@ -39,7 +39,7 @@ export function AnimationCanvas({ selectedCDS, simulationState, onStepComplete }
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
       // Draw current animation step
-      drawAnimationStep(ctx, simulationState.currentStep, progress, selectedCDS);
+      drawAnimationStep(ctx, simulationState.currentStep, progress, selectedCDS[0]);
       
       if (progress >= 1) {
         // Step complete, move to next step
@@ -262,7 +262,7 @@ export function AnimationCanvas({ selectedCDS, simulationState, onStepComplete }
     const ribosomeY = height / 2 - 30;
     
     // Growing protein chain
-    ctx.strokeStyle = selectedCDS?.color || '#006D77';
+    ctx.strokeStyle = selectedCDS[0]?.color || '#006D77';
     ctx.lineWidth = 6;
     
     const chainLength = 80 * progress;

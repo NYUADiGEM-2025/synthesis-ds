@@ -6,9 +6,9 @@ import { cn } from "@/lib/utils";
 import { useState, useRef } from "react";
 
 interface PlasmidWorkspaceProps {
-  selectedCDS: CDSOption | null;
+  selectedCDS: CDSOption[];
   onCDSSelect: (cds: CDSOption) => void;
-  onClearCDS: () => void;
+  onClearCDS: (index?: number) => void;
   isSimulating: boolean;
   draggingCDS: CDSOption | null;
 }
@@ -19,7 +19,7 @@ export function PlasmidWorkspace({ selectedCDS, onCDSSelect, onClearCDS, isSimul
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
-    if (draggingCDS && !selectedCDS) {
+    if (draggingCDS && selectedCDS.length < 4) {
       setIsDragOver(true);
     }
   };
@@ -34,7 +34,7 @@ export function PlasmidWorkspace({ selectedCDS, onCDSSelect, onClearCDS, isSimul
     e.preventDefault();
     setIsDragOver(false);
     
-    if (draggingCDS && !selectedCDS) {
+    if (draggingCDS && selectedCDS.length < 4 && !selectedCDS.find(cds => cds.id === draggingCDS.id)) {
       onCDSSelect(draggingCDS);
     }
   };
@@ -58,18 +58,18 @@ export function PlasmidWorkspace({ selectedCDS, onCDSSelect, onClearCDS, isSimul
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
         >
-          <svg width="300" height="300" viewBox="0 0 300 300" className="drop-shadow-lg">
-            {/* Circular backbone */}
+          <svg width="320" height="320" viewBox="0 0 320 320" className="drop-shadow-lg">
+            {/* Circular backbone - thicker */}
             <circle
-              cx="150"
-              cy="150"
+              cx="160"
+              cy="160"
               r="120"
               fill="none"
               stroke="hsl(var(--primary))"
-              strokeWidth="8"
+              strokeWidth="16"
               className={cn(
                 "transition-all duration-300",
-                selectedCDS && "stroke-primary/80",
+                selectedCDS.length > 0 && "stroke-primary/80",
                 isDragOver && "stroke-primary animate-pulse"
               )}
             />
@@ -77,68 +77,97 @@ export function PlasmidWorkspace({ selectedCDS, onCDSSelect, onClearCDS, isSimul
             {/* Origin of Replication (ORI) marker */}
             <g>
               <circle
-                cx="150"
-                cy="30"
-                r="6"
+                cx="160"
+                cy="40"
+                r="8"
                 fill="hsl(var(--accent))"
                 stroke="hsl(var(--foreground))"
-                strokeWidth="2"
+                strokeWidth="3"
               />
               <text
-                x="150"
-                y="20"
+                x="160"
+                y="28"
                 textAnchor="middle"
-                className="fill-muted-foreground text-xs font-medium"
+                className="fill-muted-foreground text-sm font-bold"
               >
                 ORI
               </text>
             </g>
             
-            {/* CDS Arrow (when selected) */}
-            {selectedCDS && (
-              <g className="animate-scale-in">
-                {/* Arrow path - positioned at top right */}
-                <path
-                  d="M 200 80 L 240 100 L 230 110 L 200 95 L 170 110 L 180 100 Z"
-                  fill={selectedCDS.color}
-                  stroke="white"
-                  strokeWidth="2"
-                  className="drop-shadow-md"
-                  style={{ 
-                    filter: `drop-shadow(0 0 8px ${selectedCDS.color}60)`
-                  }}
-                />
-                {/* CDS label */}
-                <text
-                  x="205"
-                  y="70"
-                  textAnchor="middle"
-                  className="fill-foreground text-xs font-bold"
-                >
-                  {selectedCDS.name}
-                </text>
-              </g>
-            )}
+            {/* CDS Arrows positioned around the circle */}
+            {selectedCDS.map((cds, index) => {
+              // Calculate position around the circle (avoiding ORI at top)
+              const startAngle = 45; // Start at 45 degrees to avoid ORI
+              const angleSpacing = 270 / Math.max(1, selectedCDS.length - 1); // Spread across 270 degrees
+              const angle = selectedCDS.length === 1 ? 135 : startAngle + (index * angleSpacing);
+              const angleRad = (angle * Math.PI) / 180;
+              
+              // Position on the circle circumference
+              const centerX = 160;
+              const centerY = 160;
+              const radius = 120;
+              const x = centerX + radius * Math.cos(angleRad);
+              const y = centerY + radius * Math.sin(angleRad);
+              
+              // Arrow direction (tangent to circle)
+              const tangentAngle = angle + 90;
+              const arrowLength = 30;
+              const arrowWidth = 12;
+              
+              return (
+                <g key={`${cds.id}-${index}`} className="animate-scale-in">
+                  {/* Arrow body */}
+                  <path
+                    d={`M ${x - arrowLength/2 * Math.cos((tangentAngle * Math.PI) / 180)} ${y - arrowLength/2 * Math.sin((tangentAngle * Math.PI) / 180)}
+                        L ${x + arrowLength/2 * Math.cos((tangentAngle * Math.PI) / 180)} ${y + arrowLength/2 * Math.sin((tangentAngle * Math.PI) / 180)}
+                        L ${x + (arrowLength/2 - 8) * Math.cos((tangentAngle * Math.PI) / 180) + arrowWidth/2 * Math.cos(((tangentAngle + 90) * Math.PI) / 180)} ${y + (arrowLength/2 - 8) * Math.sin((tangentAngle * Math.PI) / 180) + arrowWidth/2 * Math.sin(((tangentAngle + 90) * Math.PI) / 180)}
+                        L ${x + arrowLength/2 * Math.cos((tangentAngle * Math.PI) / 180) + 8 * Math.cos((tangentAngle * Math.PI) / 180)} ${y + arrowLength/2 * Math.sin((tangentAngle * Math.PI) / 180) + 8 * Math.sin((tangentAngle * Math.PI) / 180)}
+                        L ${x + (arrowLength/2 - 8) * Math.cos((tangentAngle * Math.PI) / 180) - arrowWidth/2 * Math.cos(((tangentAngle + 90) * Math.PI) / 180)} ${y + (arrowLength/2 - 8) * Math.sin((tangentAngle * Math.PI) / 180) - arrowWidth/2 * Math.sin(((tangentAngle + 90) * Math.PI) / 180)}
+                        L ${x - arrowLength/2 * Math.cos((tangentAngle * Math.PI) / 180) - arrowWidth/2 * Math.cos(((tangentAngle + 90) * Math.PI) / 180)} ${y - arrowLength/2 * Math.sin((tangentAngle * Math.PI) / 180) - arrowWidth/2 * Math.sin(((tangentAngle + 90) * Math.PI) / 180)}
+                        L ${x - arrowLength/2 * Math.cos((tangentAngle * Math.PI) / 180) + arrowWidth/2 * Math.cos(((tangentAngle + 90) * Math.PI) / 180)} ${y - arrowLength/2 * Math.sin((tangentAngle * Math.PI) / 180) + arrowWidth/2 * Math.sin(((tangentAngle + 90) * Math.PI) / 180)}
+                        Z`}
+                    fill={cds.color}
+                    stroke="white"
+                    strokeWidth="2"
+                    className="drop-shadow-md cursor-pointer hover:opacity-80"
+                    style={{ 
+                      filter: `drop-shadow(0 0 8px ${cds.color}60)`
+                    }}
+                    onClick={() => !isSimulating && onClearCDS(index)}
+                  />
+                  
+                  {/* CDS label */}
+                  <text
+                    x={x - 25 * Math.cos((tangentAngle * Math.PI) / 180)}
+                    y={y - 25 * Math.sin((tangentAngle * Math.PI) / 180)}
+                    textAnchor="middle"
+                    className="fill-foreground text-xs font-bold pointer-events-none"
+                  >
+                    {cds.name}
+                  </text>
+                </g>
+              );
+            })}
             
             {/* Drag feedback overlay */}
-            {isDragOver && !selectedCDS && (
+            {isDragOver && selectedCDS.length < 4 && (
               <circle
-                cx="150"
-                cy="150"
+                cx="160"
+                cy="160"
                 r="120"
                 fill="hsl(var(--primary) / 0.1)"
                 stroke="hsl(var(--primary))"
-                strokeWidth="4"
-                strokeDasharray="10,5"
+                strokeWidth="6"
+                strokeDasharray="15,8"
                 className="animate-pulse"
               />
             )}
           </svg>
           
           {/* Center instructions */}
-          {!selectedCDS && (
+          {selectedCDS.length === 0 && (
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center space-y-2 bg-background/80 rounded-lg p-4 backdrop-blur-sm">
+              <div className="text-center space-y-2 bg-background/90 rounded-lg p-4 backdrop-blur-sm border border-border">
                 <p className={cn(
                   "text-sm font-medium transition-colors",
                   isDragOver ? "text-primary" : "text-muted-foreground"
@@ -151,26 +180,53 @@ export function PlasmidWorkspace({ selectedCDS, onCDSSelect, onClearCDS, isSimul
               </div>
             </div>
           )}
+          
+          {/* Center plasmid info when CDS are present */}
+          {selectedCDS.length > 0 && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="text-center space-y-1 bg-background/90 rounded-full p-3 backdrop-blur-sm border border-border/50">
+                <p className="text-xs font-bold text-foreground">pSB1C3</p>
+                <p className="text-xs text-muted-foreground">{selectedCDS.length} CDS</p>
+              </div>
+            </div>
+          )}
         </div>
         
         {/* CDS Information Panel */}
-        {selectedCDS && (
-          <div className="text-center space-y-3 animate-fade-in">
-            <div>
-              <h3 className="font-semibold text-foreground text-lg">{selectedCDS.fullName}</h3>
-              <p className="text-sm text-muted-foreground mt-1 max-w-xs mx-auto">{selectedCDS.description}</p>
+        {selectedCDS.length > 0 && (
+          <div className="text-center space-y-4 animate-fade-in max-w-md">
+            <div className="grid grid-cols-1 gap-2">
+              {selectedCDS.map((cds, index) => (
+                <div key={`${cds.id}-${index}`} className="flex items-center justify-between p-2 rounded-lg bg-accent/30 border border-border">
+                  <div className="flex items-center gap-2">
+                    <div 
+                      className="w-4 h-4 rounded"
+                      style={{ backgroundColor: cds.color }}
+                    />
+                    <span className="font-medium text-sm">{cds.fullName}</span>
+                  </div>
+                  {!isSimulating && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-6 w-6 p-0 hover:bg-destructive hover:text-destructive-foreground"
+                      onClick={() => onClearCDS(index)}
+                    >
+                      <X className="h-3 w-3" />
+                    </Button>
+                  )}
+                </div>
+              ))}
             </div>
             
-            {/* Remove button */}
-            {!isSimulating && (
+            {/* Clear all button */}
+            {!isSimulating && selectedCDS.length > 1 && (
               <Button
                 variant="destructive"
                 size="sm"
-                className="mt-4"
-                onClick={onClearCDS}
+                onClick={() => onClearCDS()}
               >
-                <X className="h-4 w-4 mr-1" />
-                Remove CDS
+                Clear All CDS
               </Button>
             )}
           </div>
@@ -178,7 +234,7 @@ export function PlasmidWorkspace({ selectedCDS, onCDSSelect, onClearCDS, isSimul
         
         {/* Status indicator */}
         <div className="text-center">
-          {selectedCDS ? (
+          {selectedCDS.length > 0 ? (
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/15 border border-primary/30">
               <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
               <span className="text-sm font-medium text-primary">Ready for Simulation</span>

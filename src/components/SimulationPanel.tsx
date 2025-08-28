@@ -5,7 +5,7 @@ import { CDSOption, SimulationState, ANIMATION_STEPS } from "@/types/central-dog
 import { Play, Pause, RotateCcw } from "lucide-react";
 
 interface SimulationPanelProps {
-  selectedCDS: CDSOption | null;
+  selectedCDS: CDSOption[];
   simulationState: SimulationState;
   onStartSimulation: () => void;
   onPauseSimulation: () => void;
@@ -22,7 +22,7 @@ export function SimulationPanel({
   onResetSimulation
 }: SimulationPanelProps) {
   const currentStep = ANIMATION_STEPS[simulationState.currentStep];
-  const canStart = selectedCDS && !simulationState.isActive;
+  const canStart = selectedCDS.length > 0 && !simulationState.isActive;
 
   return (
     <Card className="h-full">
@@ -38,7 +38,7 @@ export function SimulationPanel({
               className="w-full"
               size="lg"
               onClick={onStartSimulation}
-              disabled={!canStart}
+              disabled={selectedCDS.length === 0 || simulationState.isActive}
             >
               <Play className="mr-2 h-4 w-4" />
               Start Simulation
@@ -111,19 +111,23 @@ export function SimulationPanel({
         </div>
 
         {/* Target Protein Information */}
-        {selectedCDS && (
+        {selectedCDS.length > 0 && (
           <div className="bg-secondary/10 border border-secondary/30 rounded-lg p-4">
-            <h4 className="font-semibold text-sm mb-2 text-secondary-foreground">Target Protein</h4>
-            <div className="flex items-center gap-2 mb-2">
-              <div 
-                className="w-3 h-3 rounded-full"
-                style={{ backgroundColor: selectedCDS.color }}
-              />
-              <span className="text-sm font-medium">{selectedCDS.fullName}</span>
+            <h3 className="font-semibold text-foreground mb-2">Target Proteins</h3>
+            <div className="space-y-2">
+              {selectedCDS.map((cds, index) => (
+                <div key={`${cds.id}-${index}`} className="flex items-center gap-2 p-2 rounded-lg bg-accent/30">
+                  <div 
+                    className="w-3 h-3 rounded-full"
+                    style={{ backgroundColor: cds.color }}
+                  />
+                  <div className="text-left">
+                    <p className="text-sm font-medium">{cds.name}</p>
+                    <p className="text-xs text-muted-foreground">{cds.fullName}</p>
+                  </div>
+                </div>
+              ))}
             </div>
-            <p className="text-xs text-muted-foreground">
-              {selectedCDS.description}
-            </p>
           </div>
         )}
 

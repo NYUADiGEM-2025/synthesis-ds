@@ -2,55 +2,112 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { CDS_OPTIONS, CDSOption } from "@/types/central-dogma";
 import { cn } from "@/lib/utils";
+import { useState } from "react";
 
 interface PartsBinProps {
   selectedCDS: CDSOption | null;
   onCDSSelect: (cds: CDSOption) => void;
   isSimulating: boolean;
+  onDragStart: (cds: CDSOption) => void;
+  onDragEnd: () => void;
 }
 
-export function PartsBin({ selectedCDS, onCDSSelect, isSimulating }: PartsBinProps) {
+export function PartsBin({ selectedCDS, onCDSSelect, isSimulating, onDragStart, onDragEnd }: PartsBinProps) {
+  const [draggedItem, setDraggedItem] = useState<CDSOption | null>(null);
+
+  const handleDragStart = (e: React.DragEvent<HTMLDivElement>, cds: CDSOption) => {
+    if (isSimulating) return;
+    
+    setDraggedItem(cds);
+    onDragStart(cds);
+    e.dataTransfer.effectAllowed = 'copy';
+    e.dataTransfer.setData('text/plain', cds.id);
+  };
+
+  const handleDragEnd = () => {
+    setDraggedItem(null);
+    onDragEnd();
+  };
+
   return (
     <Card className="h-full">
       <CardHeader className="pb-4">
         <CardTitle className="text-lg font-bold text-foreground">Parts Bin</CardTitle>
         <CardDescription className="text-sm text-muted-foreground">
-          Click a Coding Sequence (CDS) to place it on the plasmid
+          Drag & drop or click a Coding Sequence (CDS) to place it on the plasmid
         </CardDescription>
       </CardHeader>
       
       <CardContent className="space-y-4">
         {CDS_OPTIONS.map((cds) => (
-          <Button
+          <div
             key={cds.id}
-            variant="outline"
+            draggable={!isSimulating && !selectedCDS}
+            onDragStart={(e) => handleDragStart(e, cds)}
+            onDragEnd={handleDragEnd}
             className={cn(
-              "w-full p-4 h-auto flex-col items-start text-left transition-all duration-200",
-              selectedCDS?.id === cds.id && "border-primary bg-primary/10",
-              isSimulating && "opacity-50 cursor-not-allowed",
-              !isSimulating && "hover:bg-accent/50"
+              "relative cursor-grab active:cursor-grabbing transition-all duration-200",
+              draggedItem?.id === cds.id && "opacity-50 scale-95",
+              isSimulating && "cursor-not-allowed"
             )}
-            onClick={() => !isSimulating && onCDSSelect(cds)}
-            disabled={isSimulating}
           >
-            <div className="flex items-center gap-2 mb-2">
-              <div 
-                className="w-4 h-4 rounded-full"
-                style={{ backgroundColor: cds.color }}
-              />
-              <span className="font-semibold">{cds.name}</span>
-            </div>
-            <div className="text-xs text-muted-foreground">{cds.fullName}</div>
-          </Button>
+            <Button
+              variant="outline"
+              className={cn(
+                "w-full p-4 h-auto flex-col items-start text-left transition-all duration-200 relative",
+                selectedCDS?.id === cds.id && "border-primary bg-primary/10 shadow-md",
+                isSimulating && "opacity-50 cursor-not-allowed",
+                !isSimulating && !selectedCDS && "hover:bg-accent/50 hover:scale-[1.02] hover:shadow-lg",
+                !isSimulating && selectedCDS && selectedCDS.id !== cds.id && "opacity-60"
+              )}
+              onClick={() => !isSimulating && !selectedCDS && onCDSSelect(cds)}
+              disabled={isSimulating || !!selectedCDS}
+            >
+              {/* Drag indicator */}
+              {!isSimulating && !selectedCDS && (
+                <div className="absolute top-2 right-2 text-muted-foreground/50">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
+                    <circle cx="2" cy="2" r="1"/>
+                    <circle cx="6" cy="2" r="1"/>
+                    <circle cx="10" cy="2" r="1"/>
+                    <circle cx="2" cy="6" r="1"/>
+                    <circle cx="6" cy="6" r="1"/>
+                    <circle cx="10" cy="6" r="1"/>
+                    <circle cx="2" cy="10" r="1"/>
+                    <circle cx="6" cy="10" r="1"/>
+                    <circle cx="10" cy="10" r="1"/>
+                  </svg>
+                </div>
+              )}
+              
+              <div className="flex items-center gap-3 mb-2 w-full">
+                <div 
+                  className="w-6 h-6 rounded-full shadow-sm border-2 border-white/50"
+                  style={{ 
+                    backgroundColor: cds.color,
+                    boxShadow: `0 0 8px ${cds.color}40`
+                  }}
+                />
+                <span className="font-semibold text-base">{cds.name}</span>
+              </div>
+              
+              <div className="text-sm text-muted-foreground mb-1">{cds.fullName}</div>
+              <div className="text-xs text-muted-foreground/80 leading-relaxed">{cds.description}</div>
+              
+              {selectedCDS?.id === cds.id && (
+                <div className="absolute -top-1 -right-1 w-3 h-3 bg-primary rounded-full border-2 border-background"></div>
+              )}
+            </Button>
+          </div>
         ))}
         
-        <div className="mt-6 p-4 bg-accent/20 rounded-lg">
-          <h4 className="font-semibold text-sm mb-2">Instructions:</h4>
-          <ol className="text-xs text-muted-foreground space-y-1">
-            <li>1. Select a CDS from above</li>
-            <li>2. CDS will appear on the plasmid</li>
+        <div className="mt-6 p-4 bg-gradient-to-br from-accent/20 to-accent/10 rounded-lg border border-accent/30">
+          <h4 className="font-semibold text-sm mb-2 text-foreground">Instructions:</h4>
+          <ol className="text-xs text-muted-foreground space-y-1 leading-relaxed">
+            <li>1. Drag a CDS to the plasmid workspace</li>
+            <li>2. Or click to select (if none selected)</li>
             <li>3. Click "Start Simulation" to begin</li>
-            <li>4. Watch the Central Dogma unfold!</li>
+            <li>4. Watch transcription and translation!</li>
           </ol>
         </div>
       </CardContent>

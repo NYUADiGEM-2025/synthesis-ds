@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 
 export function CentralDogmaSimulator() {
   const [selectedCDS, setSelectedCDS] = useState<CDSOption | null>(null);
+  const [draggingCDS, setDraggingCDS] = useState<CDSOption | null>(null);
   const [simulationState, setSimulationState] = useState<SimulationState>({
     isActive: false,
     isPaused: false,
@@ -18,12 +19,22 @@ export function CentralDogmaSimulator() {
   const { toast } = useToast();
 
   const handleCDSSelect = useCallback((cds: CDSOption) => {
-    setSelectedCDS(cds);
-    toast({
-      title: "CDS Selected",
-      description: `${cds.fullName} added to plasmid`,
-    });
-  }, [toast]);
+    if (!selectedCDS) {
+      setSelectedCDS(cds);
+      toast({
+        title: "CDS Placed",
+        description: `${cds.fullName} added to plasmid workspace`,
+      });
+    }
+  }, [selectedCDS, toast]);
+
+  const handleDragStart = useCallback((cds: CDSOption) => {
+    setDraggingCDS(cds);
+  }, []);
+
+  const handleDragEnd = useCallback(() => {
+    setDraggingCDS(null);
+  }, []);
 
   const handleClearCDS = useCallback(() => {
     setSelectedCDS(null);
@@ -138,6 +149,8 @@ export function CentralDogmaSimulator() {
                 selectedCDS={selectedCDS}
                 onCDSSelect={handleCDSSelect}
                 isSimulating={simulationState.isActive}
+                onDragStart={handleDragStart}
+                onDragEnd={handleDragEnd}
               />
             </div>
 
@@ -145,8 +158,10 @@ export function CentralDogmaSimulator() {
             <div className="lg:col-span-2">
               <PlasmidWorkspace
                 selectedCDS={selectedCDS}
+                onCDSSelect={handleCDSSelect}
                 onClearCDS={handleClearCDS}
                 isSimulating={simulationState.isActive}
+                draggingCDS={draggingCDS}
               />
             </div>
 

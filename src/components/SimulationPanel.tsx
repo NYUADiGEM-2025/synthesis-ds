@@ -1,0 +1,149 @@
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { CDSOption, SimulationState, ANIMATION_STEPS } from "@/types/central-dogma";
+import { Play, Pause, RotateCcw } from "lucide-react";
+
+interface SimulationPanelProps {
+  selectedCDS: CDSOption | null;
+  simulationState: SimulationState;
+  onStartSimulation: () => void;
+  onPauseSimulation: () => void;
+  onResumeSimulation: () => void;
+  onResetSimulation: () => void;
+}
+
+export function SimulationPanel({
+  selectedCDS,
+  simulationState,
+  onStartSimulation,
+  onPauseSimulation,
+  onResumeSimulation,
+  onResetSimulation
+}: SimulationPanelProps) {
+  const currentStep = ANIMATION_STEPS[simulationState.currentStep];
+  const canStart = selectedCDS && !simulationState.isActive;
+
+  return (
+    <Card className="h-full">
+      <CardHeader className="pb-4">
+        <CardTitle className="text-lg font-bold text-foreground">Simulation Controls</CardTitle>
+      </CardHeader>
+      
+      <CardContent className="space-y-6">
+        {/* Primary Controls */}
+        <div className="space-y-3">
+          {!simulationState.isActive ? (
+            <Button
+              className="w-full"
+              size="lg"
+              onClick={onStartSimulation}
+              disabled={!canStart}
+            >
+              <Play className="mr-2 h-4 w-4" />
+              Start Simulation
+            </Button>
+          ) : (
+            <div className="space-y-2">
+              <Button
+                className="w-full"
+                variant="secondary"
+                onClick={simulationState.isPaused ? onResumeSimulation : onPauseSimulation}
+              >
+                {simulationState.isPaused ? (
+                  <>
+                    <Play className="mr-2 h-4 w-4" />
+                    Resume
+                  </>
+                ) : (
+                  <>
+                    <Pause className="mr-2 h-4 w-4" />
+                    Pause
+                  </>
+                )}
+              </Button>
+              
+              <Button
+                className="w-full"
+                variant="outline"
+                onClick={onResetSimulation}
+              >
+                <RotateCcw className="mr-2 h-4 w-4" />
+                Reset
+              </Button>
+            </div>
+          )}
+        </div>
+
+        {/* Progress Tracking */}
+        {simulationState.isActive && (
+          <div className="space-y-3">
+            <div>
+              <div className="flex justify-between text-sm mb-2">
+                <span className="font-medium">Progress</span>
+                <span className="text-muted-foreground">{Math.round(simulationState.progress)}%</span>
+              </div>
+              <Progress value={simulationState.progress} className="h-2" />
+            </div>
+            
+            <div className="bg-accent/20 rounded-lg p-3">
+              <div className="text-sm font-semibold text-foreground mb-1">
+                Step {simulationState.currentStep + 1}/10: {currentStep?.title}
+              </div>
+              {simulationState.isPaused && (
+                <div className="text-xs text-muted-foreground">
+                  Simulation paused
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Educational Caption Box */}
+        <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
+          <h4 className="font-semibold text-sm mb-2 text-primary">Current Process</h4>
+          <p className="text-xs text-foreground leading-relaxed">
+            {simulationState.isActive 
+              ? currentStep?.description 
+              : "Select a coding sequence and start the simulation to watch the Central Dogma in action - the fundamental process of gene expression from DNA to RNA to protein."
+            }
+          </p>
+        </div>
+
+        {/* Target Protein Information */}
+        {selectedCDS && (
+          <div className="bg-secondary/10 border border-secondary/30 rounded-lg p-4">
+            <h4 className="font-semibold text-sm mb-2 text-secondary-foreground">Target Protein</h4>
+            <div className="flex items-center gap-2 mb-2">
+              <div 
+                className="w-3 h-3 rounded-full"
+                style={{ backgroundColor: selectedCDS.color }}
+              />
+              <span className="text-sm font-medium">{selectedCDS.fullName}</span>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              {selectedCDS.description}
+            </p>
+          </div>
+        )}
+
+        {/* Central Dogma Reference */}
+        <div className="bg-muted/20 rounded-lg p-4">
+          <h4 className="font-semibold text-sm mb-2">Central Dogma</h4>
+          <div className="text-xs text-muted-foreground space-y-1">
+            <div className="flex items-center gap-2">
+              <span className="font-medium text-dna">DNA</span>
+              <span>→</span>
+              <span className="font-medium text-mrna">RNA</span>
+              <span>→</span>
+              <span className="font-medium text-primary">Protein</span>
+            </div>
+            <p className="mt-2 leading-relaxed">
+              The flow of genetic information from DNA through RNA to proteins
+            </p>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}

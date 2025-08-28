@@ -52,6 +52,14 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				// Protein-specific colors for Central Dogma Simulator
+				egfp: 'hsl(var(--egfp))',
+				mrfp1: 'hsl(var(--mrfp1))',
+				mtagbfp2: 'hsl(var(--mtagbfp2))',
+				mrna: 'hsl(var(--mrna))',
+				dna: 'hsl(var(--dna-color))',
+				polymerase: 'hsl(var(--rna-polymerase))',
+				ribosome: 'hsl(var(--ribosome))',
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',

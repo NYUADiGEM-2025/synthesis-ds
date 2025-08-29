@@ -8,45 +8,45 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Central Dogma Simulator Color Palette */
-    --background: 206 100% 97%; /* Alice Blue */
-    --foreground: 140 100% 2%; /* Night */
+    /* Central Dogma Simulator Color Palette - Updated Theme */
+    --background: 150 30% 85%; /* Mint green background */
+    --foreground: 183 100% 15%; /* Dark teal */
 
-    --card: 206 100% 97%; /* Alice Blue */
-    --card-foreground: 140 100% 2%; /* Night */
+    --card: 0 0% 100%; /* White cards */
+    --card-foreground: 183 100% 15%; /* Dark teal */
 
-    --popover: 206 100% 97%; /* Alice Blue */
-    --popover-foreground: 140 100% 2%; /* Night */
+    --popover: 0 0% 100%; /* White popover */
+    --popover-foreground: 183 100% 15%; /* Dark teal */
 
-    --primary: 183 100% 23%; /* Caribbean Current */
-    --primary-foreground: 206 100% 97%; /* Alice Blue */
+    --primary: 183 100% 25%; /* Dark teal primary */
+    --primary-foreground: 0 0% 100%; /* White text */
 
-    --secondary: 171 32% 63%; /* Tiffany Blue */
-    --secondary-foreground: 140 100% 2%; /* Night */
+    --secondary: 150 25% 75%; /* Light mint */
+    --secondary-foreground: 183 100% 15%; /* Dark teal */
 
-    --muted: 171 32% 63%; /* Tiffany Blue */
-    --muted-foreground: 140 100% 2%; /* Night */
+    --muted: 150 20% 70%; /* Muted mint */
+    --muted-foreground: 183 80% 20%; /* Darker teal */
 
-    --accent: 22 100% 89%; /* Pale Dogwood */
-    --accent-foreground: 140 100% 2%; /* Night */
+    --accent: 150 40% 80%; /* Bright mint accent */
+    --accent-foreground: 183 100% 15%; /* Dark teal */
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 171 32% 63%; /* Tiffany Blue */
-    --input: 171 32% 63%; /* Tiffany Blue */
-    --ring: 183 100% 23%; /* Caribbean Current */
+    --border: 150 20% 70%; /* Mint border */
+    --input: 150 20% 70%; /* Mint input */
+    --ring: 183 100% 25%; /* Dark teal ring */
 
     /* Protein-specific colors */
-    --egfp: 120 100% 50%; /* Bright Green */
-    --mrfp1: 0 100% 50%; /* Bright Red */
-    --mtagbfp2: 240 100% 50%; /* Bright Blue */
+    --egfp: 120 60% 50%; /* Green for EGFP */
+    --mrfp1: 15 80% 65%; /* Salmon/pink for mRFP1 */
+    --mtagbfp2: 210 70% 55%; /* Blue for mTagBFP2 */
     --mrna: 73 100% 85%; /* Mindaro */
     
     /* Canvas colors */
-    --dna-color: 183 100% 23%; /* Caribbean Current */
-    --rna-polymerase: 171 32% 63%; /* Tiffany Blue */
-    --ribosome: 22 100% 89%; /* Pale Dogwood */
+    --dna-color: 183 100% 25%; /* Dark teal */
+    --rna-polymerase: 150 40% 60%; /* Medium mint */
+    --ribosome: 150 30% 70%; /* Light mint */
 
     --radius: 0.5rem;
 

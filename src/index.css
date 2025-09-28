@@ -8,62 +8,62 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Central Dogma Simulator Color Palette - Updated Theme */
-    --background: 150 30% 85%; /* Mint green background */
-    --foreground: 183 100% 15%; /* Dark teal */
+    /* Beautiful Gradient Theme - Inspired by the uploaded gradient */
+    --background: 220 20% 98%; /* Very light blue-gray */
+    --foreground: 220 30% 15%; /* Deep blue-gray */
 
-    --card: 0 0% 100%; /* White cards */
-    --card-foreground: 183 100% 15%; /* Dark teal */
+    --card: 0 0% 100%; /* Pure white cards */
+    --card-foreground: 220 30% 15%; /* Deep blue-gray */
 
-    --popover: 0 0% 100%; /* White popover */
-    --popover-foreground: 183 100% 15%; /* Dark teal */
+    --popover: 0 0% 100%; /* Pure white popover */
+    --popover-foreground: 220 30% 15%; /* Deep blue-gray */
 
-    --primary: 183 100% 25%; /* Dark teal primary */
+    --primary: 200 100% 40%; /* Rich cyan-blue */
     --primary-foreground: 0 0% 100%; /* White text */
 
-    --secondary: 150 25% 75%; /* Light mint */
-    --secondary-foreground: 183 100% 15%; /* Dark teal */
+    --secondary: 340 30% 85%; /* Soft peachy pink */
+    --secondary-foreground: 220 30% 20%; /* Dark blue-gray */
 
-    --muted: 150 20% 70%; /* Muted mint */
-    --muted-foreground: 183 80% 20%; /* Darker teal */
+    --muted: 220 15% 92%; /* Very light blue-gray */
+    --muted-foreground: 220 20% 40%; /* Medium blue-gray */
 
-    --accent: 150 40% 80%; /* Bright mint accent */
-    --accent-foreground: 183 100% 15%; /* Dark teal */
+    --accent: 180 40% 88%; /* Light teal */
+    --accent-foreground: 220 30% 20%; /* Dark blue-gray */
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 150 20% 70%; /* Mint border */
-    --input: 150 20% 70%; /* Mint input */
-    --ring: 183 100% 25%; /* Dark teal ring */
+    --border: 220 15% 88%; /* Light border */
+    --input: 220 15% 92%; /* Light input */
+    --ring: 200 100% 40%; /* Primary blue ring */
 
-    /* Protein-specific colors */
-    --egfp: 120 60% 50%; /* Green for EGFP */
-    --mrfp1: 15 80% 65%; /* Salmon/pink for mRFP1 */
-    --mtagbfp2: 210 70% 55%; /* Blue for mTagBFP2 */
-    --mrna: 73 100% 85%; /* Mindaro */
+    /* Protein-specific colors - adjusted for new theme */
+    --egfp: 120 70% 45%; /* Rich green for EGFP */
+    --mrfp1: 15 85% 60%; /* Coral-pink for mRFP1 */
+    --mtagbfp2: 240 80% 55%; /* Rich blue for mTagBFP2 */
+    --mrna: 50 100% 85%; /* Light yellow for mRNA */
     
     /* Canvas colors */
-    --dna-color: 183 100% 25%; /* Dark teal */
-    --rna-polymerase: 150 40% 60%; /* Medium mint */
-    --ribosome: 150 30% 70%; /* Light mint */
+    --dna-color: 200 100% 40%; /* Primary blue */
+    --rna-polymerase: 180 50% 50%; /* Teal */
+    --ribosome: 340 40% 70%; /* Soft pink */
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
+
+    /* Gradient background */
+    --gradient-bg: linear-gradient(135deg, 
+      hsl(200 70% 80%) 0%, 
+      hsl(180 60% 85%) 25%, 
+      hsl(340 40% 88%) 75%, 
+      hsl(30 50% 90%) 100%);
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
@@ -113,5 +113,8 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    background: var(--gradient-bg);
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
   }
 }

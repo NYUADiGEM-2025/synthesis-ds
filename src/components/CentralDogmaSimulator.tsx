@@ -136,14 +136,14 @@ export function CentralDogmaSimulator() {
   }, [selectedCDS, toast]);
 
   return (
-    <div className="min-h-screen bg-background p-4">
+    <div className="min-h-screen p-4">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-foreground mb-2">
+          <h1 className="text-5xl font-bold text-foreground mb-3 font-inter tracking-tight">
             Central Dogma Simulator
           </h1>
-          <p className="text-lg text-muted-foreground">
+          <p className="text-xl text-muted-foreground font-inter font-light">
             Interactive visualization of gene expression from DNA to protein
           </p>
         </div>

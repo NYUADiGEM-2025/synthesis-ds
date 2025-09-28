@@ -26,11 +26,11 @@ export function SimulationPanel({
 
   return (
     <Card className="h-full">
-      <CardHeader className="pb-4">
+      <CardHeader className="pb-3">
         <CardTitle className="text-lg font-bold text-foreground">Simulation Controls</CardTitle>
       </CardHeader>
       
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-4 overflow-y-auto max-h-[calc(100vh-300px)]">
         {/* Primary Controls */}
         <div className="space-y-3">
           {!simulationState.isActive ? (
@@ -100,9 +100,9 @@ export function SimulationPanel({
         )}
 
         {/* Educational Caption Box */}
-        <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
+        <div className="bg-primary/5 border border-primary/20 rounded-lg p-3">
           <h4 className="font-semibold text-sm mb-2 text-primary">Current Process</h4>
-          <p className="text-xs text-foreground leading-relaxed">
+          <p className="text-xs text-foreground leading-tight">
             {simulationState.isActive 
               ? currentStep?.description 
               : "Select a coding sequence and start the simulation to watch the Central Dogma in action - the fundamental process of gene expression from DNA to RNA to protein."
@@ -112,18 +112,18 @@ export function SimulationPanel({
 
         {/* Target Protein Information */}
         {selectedCDS.length > 0 && (
-          <div className="bg-secondary/10 border border-secondary/30 rounded-lg p-4">
-            <h3 className="font-semibold text-foreground mb-2">Target Proteins</h3>
+          <div className="bg-secondary/10 border border-secondary/30 rounded-lg p-3">
+            <h3 className="font-semibold text-sm text-foreground mb-2">Target Proteins</h3>
             <div className="space-y-2">
               {selectedCDS.map((cds, index) => (
                 <div key={`${cds.id}-${index}`} className="flex items-center gap-2 p-2 rounded-lg bg-accent/30">
                   <div 
-                    className="w-3 h-3 rounded-full"
+                    className="w-3 h-3 rounded-full flex-shrink-0"
                     style={{ backgroundColor: cds.color }}
                   />
-                  <div className="text-left">
-                    <p className="text-sm font-medium">{cds.name}</p>
-                    <p className="text-xs text-muted-foreground">{cds.fullName}</p>
+                  <div className="text-left min-w-0">
+                    <p className="text-xs font-medium truncate">{cds.name}</p>
+                    <p className="text-xs text-muted-foreground truncate">{cds.fullName}</p>
                   </div>
                 </div>
               ))}
@@ -132,17 +132,17 @@ export function SimulationPanel({
         )}
 
         {/* Central Dogma Reference */}
-        <div className="bg-muted/20 rounded-lg p-4">
+        <div className="bg-muted/20 rounded-lg p-3">
           <h4 className="font-semibold text-sm mb-2">Central Dogma</h4>
           <div className="text-xs text-muted-foreground space-y-1">
             <div className="flex items-center gap-2">
-              <span className="font-medium text-dna">DNA</span>
+              <span className="font-medium text-primary">DNA</span>
               <span>→</span>
-              <span className="font-medium text-mrna">RNA</span>
+              <span className="font-medium text-primary">RNA</span>
               <span>→</span>
               <span className="font-medium text-primary">Protein</span>
             </div>
-            <p className="mt-2 leading-relaxed">
+            <p className="mt-2 leading-tight">
               The flow of genetic information from DNA through RNA to proteins
             </p>
           </div>

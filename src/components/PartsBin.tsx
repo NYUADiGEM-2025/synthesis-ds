@@ -31,14 +31,14 @@ export function PartsBin({ selectedCDS, onCDSSelect, isSimulating, onDragStart, 
 
   return (
     <Card className="h-full">
-      <CardHeader className="pb-4">
+      <CardHeader className="pb-3">
         <CardTitle className="text-lg font-bold text-foreground">Parts Bin</CardTitle>
-        <CardDescription className="text-sm text-muted-foreground">
+        <CardDescription className="text-sm text-muted-foreground leading-tight">
           Drag & drop or click a Coding Sequence (CDS) to place it on the plasmid
         </CardDescription>
       </CardHeader>
       
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-3 overflow-y-auto max-h-[calc(100vh-300px)]">
         {CDS_OPTIONS.map((cds) => (
           <div
             key={cds.id}
@@ -54,7 +54,7 @@ export function PartsBin({ selectedCDS, onCDSSelect, isSimulating, onDragStart, 
             <Button
               variant="outline"
               className={cn(
-                "w-full p-4 h-auto flex-col items-start text-left transition-all duration-200 relative",
+                "w-full p-3 h-auto flex-col items-start text-left transition-all duration-200 relative",
                 selectedCDS.find(selected => selected.id === cds.id) && "border-primary bg-primary/10 shadow-md",
                 isSimulating && "opacity-50 cursor-not-allowed",
                 !isSimulating && selectedCDS.length < 4 && !selectedCDS.find(selected => selected.id === cds.id) && "hover:bg-accent/50 hover:scale-[1.02] hover:shadow-lg",
@@ -80,19 +80,19 @@ export function PartsBin({ selectedCDS, onCDSSelect, isSimulating, onDragStart, 
                 </div>
               )}
               
-              <div className="flex items-center gap-3 mb-2 w-full">
+              <div className="flex items-center gap-2 mb-1 w-full">
                 <div 
-                  className="w-6 h-6 rounded-full shadow-sm border-2 border-white/50"
+                  className="w-5 h-5 rounded-full shadow-sm border border-white/50 flex-shrink-0"
                   style={{ 
                     backgroundColor: cds.color,
-                    boxShadow: `0 0 8px ${cds.color}40`
+                    boxShadow: `0 0 6px ${cds.color}40`
                   }}
                 />
-                <span className="font-semibold text-base">{cds.name}</span>
+                <span className="font-semibold text-sm">{cds.name}</span>
               </div>
               
-              <div className="text-sm text-muted-foreground mb-1">{cds.fullName}</div>
-              <div className="text-xs text-muted-foreground/80 leading-relaxed">{cds.description}</div>
+              <div className="text-xs text-muted-foreground mb-1 font-medium">{cds.fullName}</div>
+              <div className="text-xs text-muted-foreground/80 leading-tight line-clamp-2">{cds.description}</div>
               
               {selectedCDS.find(selected => selected.id === cds.id) && (
                 <div className="absolute -top-1 -right-1 w-3 h-3 bg-primary rounded-full border-2 border-background"></div>
@@ -101,9 +101,9 @@ export function PartsBin({ selectedCDS, onCDSSelect, isSimulating, onDragStart, 
           </div>
         ))}
         
-        <div className="mt-6 p-4 bg-gradient-to-br from-accent/20 to-accent/10 rounded-lg border border-accent/30">
+        <div className="mt-4 p-3 bg-gradient-to-br from-accent/20 to-accent/10 rounded-lg border border-accent/30">
           <h4 className="font-semibold text-sm mb-2 text-foreground">Instructions:</h4>
-          <ol className="text-xs text-muted-foreground space-y-1 leading-relaxed">
+          <ol className="text-xs text-muted-foreground space-y-1 leading-tight">
             <li>1. Drag a CDS to the plasmid workspace</li>
             <li>2. Or click to select (if none selected)</li>
             <li>3. Click "Start Simulation" to begin</li>

@@ -54,7 +54,7 @@ export function PartsBin({ selectedCDS, onCDSSelect, isSimulating, onDragStart, 
             <Button
               variant="outline"
               className={cn(
-                "w-full p-3 h-auto flex-col items-start text-left transition-all duration-200 relative",
+                "flex w-full p-3 pr-10 h-auto flex-col items-start text-left transition-all duration-200 relative whitespace-normal break-words leading-snug",
                 selectedCDS.find(selected => selected.id === cds.id) && "border-primary bg-primary/10 shadow-md",
                 isSimulating && "opacity-50 cursor-not-allowed",
                 !isSimulating && selectedCDS.length < 4 && !selectedCDS.find(selected => selected.id === cds.id) && "hover:bg-accent/50 hover:scale-[1.02] hover:shadow-lg",
@@ -80,7 +80,7 @@ export function PartsBin({ selectedCDS, onCDSSelect, isSimulating, onDragStart, 
                 </div>
               )}
               
-              <div className="flex items-center gap-2 mb-1 w-full">
+              <div className="flex items-center gap-2 mb-1 w-full whitespace-normal break-words">
                 <div 
                   className="w-5 h-5 rounded-full shadow-sm border border-white/50 flex-shrink-0"
                   style={{ 
@@ -88,10 +88,10 @@ export function PartsBin({ selectedCDS, onCDSSelect, isSimulating, onDragStart, 
                     boxShadow: `0 0 6px ${cds.color}40`
                   }}
                 />
-                <span className="font-semibold text-sm">{cds.name}</span>
+                <span className="font-semibold text-sm whitespace-normal break-words">{cds.name}</span>
               </div>
               
-              <div className="text-xs text-muted-foreground mb-1 font-medium">{cds.fullName}</div>
+              <div className="text-xs text-muted-foreground mb-1 font-medium whitespace-normal break-words">{cds.fullName}</div>
               <div className="text-xs text-muted-foreground/80 leading-tight line-clamp-2">{cds.description}</div>
               
               {selectedCDS.find(selected => selected.id === cds.id) && (

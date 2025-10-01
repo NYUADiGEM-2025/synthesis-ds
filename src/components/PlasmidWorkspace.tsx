@@ -3,7 +3,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CDSOption } from "@/types/central-dogma";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useState, useRef } from "react";
+import { useState, useRef, useMemo } from "react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface PlasmidWorkspaceProps {
   selectedCDS: CDSOption[];
@@ -16,6 +22,76 @@ interface PlasmidWorkspaceProps {
 export function PlasmidWorkspace({ selectedCDS, onCDSSelect, onClearCDS, isSimulating, draggingCDS }: PlasmidWorkspaceProps) {
   const [isDragOver, setIsDragOver] = useState(false);
   const dropZoneRef = useRef<HTMLDivElement>(null);
+
+  // Collision detection for labels
+  const labelPositions = useMemo(() => {
+    if (selectedCDS.length === 0) return [];
+
+    const centerX = 250;
+    const centerY = 250;
+    const radius = 180;
+    const labelDistance = 75; // Distance from circle edge to label
+    const minLabelSpacing = 35; // Minimum vertical spacing between labels
+
+    // Calculate initial positions
+    const startAngle = 70;
+    const angleSpacing = 260 / Math.max(1, selectedCDS.length);
+    
+    const positions = selectedCDS.map((cds, index) => {
+      const angle = startAngle + (index * angleSpacing);
+      const arcLength = 50;
+      const labelAngle = angle + arcLength / 2;
+      const labelAngleRad = (labelAngle * Math.PI) / 180;
+      
+      const labelRadius = radius + labelDistance;
+      const x = centerX + labelRadius * Math.cos(labelAngleRad);
+      const y = centerY + labelRadius * Math.sin(labelAngleRad);
+      
+      const textAnchor = labelAngle > 90 && labelAngle < 270 ? "end" : "start";
+      
+      return {
+        x,
+        y: y,
+        originalY: y,
+        angle: labelAngle,
+        labelAngleRad,
+        textAnchor,
+        cds,
+        index,
+        arcAngle: angle,
+        arcLength
+      };
+    });
+
+    // Sort by y position for collision detection
+    positions.sort((a, b) => a.y - b.y);
+
+    // Apply collision avoidance - push overlapping labels apart
+    for (let i = 1; i < positions.length; i++) {
+      const current = positions[i];
+      const previous = positions[i - 1];
+      
+      const gap = current.y - previous.y;
+      if (gap < minLabelSpacing) {
+        current.y = previous.y + minLabelSpacing;
+      }
+    }
+
+    // Ensure labels don't go beyond bounds (with padding)
+    const minY = 40;
+    const maxY = 460;
+    
+    // Adjust if out of bounds
+    positions.forEach(pos => {
+      if (pos.y < minY) pos.y = minY;
+      if (pos.y > maxY) pos.y = maxY;
+    });
+
+    // Re-sort by original index
+    positions.sort((a, b) => a.index - b.index);
+
+    return positions;
+  }, [selectedCDS]);
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -74,37 +150,31 @@ export function PlasmidWorkspace({ selectedCDS, onCDSSelect, onClearCDS, isSimul
             />
             
             {/* CDS Arc segments positioned around the circle */}
-            {selectedCDS.map((cds, index) => {
-              // Calculate position around the circle
-              const startAngle = 70; // Start angle (avoiding top area for ORI)
-              const angleSpacing = 260 / Math.max(1, selectedCDS.length); // Spread across 260 degrees
-              const angle = startAngle + (index * angleSpacing);
-              const arcLength = 50; // Length of each arc in degrees
-              const angleRad = (angle * Math.PI) / 180;
-              const endAngleRad = ((angle + arcLength) * Math.PI) / 180;
+            {labelPositions.map((pos) => {
+              const { cds, index, arcAngle, arcLength, labelAngleRad, textAnchor, x: labelX, y: labelY } = pos;
               
-              // Position for arc
+              // Calculate arc path
               const centerX = 250;
               const centerY = 250;
               const radius = 180;
               
-              // Calculate arc path
+              const angleRad = (arcAngle * Math.PI) / 180;
+              const endAngleRad = ((arcAngle + arcLength) * Math.PI) / 180;
+              
               const startX = centerX + radius * Math.cos(angleRad);
               const startY = centerY + radius * Math.sin(angleRad);
               const endX = centerX + radius * Math.cos(endAngleRad);
               const endY = centerY + radius * Math.sin(endAngleRad);
               
-              // Label position - smarter positioning to avoid overlap
-              const labelAngle = angle + arcLength / 2;
-              const labelAngleRad = (labelAngle * Math.PI) / 180;
+              // Connection point on the arc (middle of arc)
+              const arcMidAngleRad = ((arcAngle + arcLength / 2) * Math.PI) / 180;
+              const connX = centerX + radius * Math.cos(arcMidAngleRad);
+              const connY = centerY + radius * Math.sin(arcMidAngleRad);
               
-              // Vary the distance based on position to reduce overlap
-              const labelRadius = radius + 65 + (index % 2) * 12;
-              const labelX = centerX + labelRadius * Math.cos(labelAngleRad);
-              const labelY = centerY + labelRadius * Math.sin(labelAngleRad);
-              
-              // Text anchor based on position
-              const textAnchor = labelAngle > 90 && labelAngle < 270 ? "end" : "start";
+              // Label dimensions
+              const labelWidth = 60;
+              const labelHeight = 24;
+              const padding = 4;
               
               return (
                 <g key={`${cds.id}-${index}`} className="animate-scale-in">
@@ -122,35 +192,54 @@ export function PlasmidWorkspace({ selectedCDS, onCDSSelect, onClearCDS, isSimul
                     onClick={() => !isSimulating && onClearCDS(index)}
                   />
                   
-                  {/* Connector line from arc to label */}
+                  {/* Leader line from arc to label */}
                   <line
-                    x1={centerX + radius * Math.cos(labelAngleRad)}
-                    y1={centerY + radius * Math.sin(labelAngleRad)}
-                    x2={centerX + (labelRadius - 10) * Math.cos(labelAngleRad)}
-                    y2={centerY + (labelRadius - 10) * Math.sin(labelAngleRad)}
-                    stroke="hsl(var(--muted-foreground) / 0.3)"
+                    x1={connX}
+                    y1={connY}
+                    x2={labelX + (textAnchor === "end" ? -padding : padding)}
+                    y2={labelY}
+                    stroke="hsl(var(--muted-foreground) / 0.4)"
                     strokeWidth="1.5"
                     strokeDasharray="3,3"
                   />
                   
-                  {/* CDS label with background for better readability */}
-                  <rect
-                    x={textAnchor === "end" ? labelX - 85 : labelX}
-                    y={labelY - 14}
-                    width="85"
-                    height="22"
-                    fill="hsl(var(--background) / 0.95)"
-                    rx="5"
-                  />
-                  <text
-                    x={labelX}
-                    y={labelY}
-                    textAnchor={textAnchor}
-                    className="text-sm font-medium pointer-events-none"
-                    style={{ fill: cds.color }}
-                  >
-                    {cds.name} gene
-                  </text>
+                  {/* Label background with tooltip */}
+                  <TooltipProvider delayDuration={100}>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <g className="cursor-help">
+                          <rect
+                            x={textAnchor === "end" ? labelX - labelWidth - padding : labelX + padding}
+                            y={labelY - labelHeight / 2}
+                            width={labelWidth}
+                            height={labelHeight}
+                            fill="hsl(var(--background) / 0.95)"
+                            rx="6"
+                            stroke={cds.color}
+                            strokeWidth="1.5"
+                            className="transition-all hover:stroke-2"
+                          />
+                          <text
+                            x={textAnchor === "end" ? labelX - labelWidth / 2 - padding : labelX + labelWidth / 2 + padding}
+                            y={labelY + 1}
+                            textAnchor="middle"
+                            dominantBaseline="middle"
+                            className="text-xs font-semibold pointer-events-none select-none"
+                            style={{ fill: cds.color }}
+                          >
+                            {cds.name}
+                          </text>
+                        </g>
+                      </TooltipTrigger>
+                      <TooltipContent 
+                        side="top" 
+                        className="bg-popover text-popover-foreground border-border"
+                      >
+                        <p className="font-medium">{cds.fullName}</p>
+                        <p className="text-xs text-muted-foreground mt-1">Click arc to remove</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 </g>
               );
             })}
@@ -168,32 +257,53 @@ export function PlasmidWorkspace({ selectedCDS, onCDSSelect, onClearCDS, isSimul
                     filter: `drop-shadow(0 0 6px #8b5cf640)`
                   }}
                 />
-                <rect
-                  x="355"
-                  y="115"
-                  width="105"
-                  height="38"
-                  fill="hsl(var(--background) / 0.95)"
-                  rx="5"
-                />
-                <text
-                  x="365"
-                  y="132"
-                  textAnchor="start"
-                  className="text-sm font-medium"
-                  fill="#8b5cf6"
-                >
-                  Origin of
-                </text>
-                <text
-                  x="365"
-                  y="148"
-                  textAnchor="start"
-                  className="text-sm font-medium"
-                  fill="#8b5cf6"
-                >
-                  replication
-                </text>
+                
+                {/* Origin of Replication label with tooltip */}
+                <TooltipProvider delayDuration={100}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <g className="cursor-help">
+                        <line
+                          x1={250 + 180 * Math.cos(0)}
+                          y1={250 + 180 * Math.sin(0)}
+                          x2={250 + 240}
+                          y2={250 - 80}
+                          stroke="hsl(var(--muted-foreground) / 0.4)"
+                          strokeWidth="1.5"
+                          strokeDasharray="3,3"
+                        />
+                        <rect
+                          x={250 + 245}
+                          y={250 - 92}
+                          width="45"
+                          height="24"
+                          fill="hsl(var(--background) / 0.95)"
+                          rx="6"
+                          stroke="#8b5cf6"
+                          strokeWidth="1.5"
+                          className="transition-all hover:stroke-2"
+                        />
+                        <text
+                          x={250 + 267.5}
+                          y={250 - 79}
+                          textAnchor="middle"
+                          dominantBaseline="middle"
+                          className="text-xs font-semibold pointer-events-none select-none"
+                          fill="#8b5cf6"
+                        >
+                          ORI
+                        </text>
+                      </g>
+                    </TooltipTrigger>
+                    <TooltipContent 
+                      side="top" 
+                      className="bg-popover text-popover-foreground border-border"
+                    >
+                      <p className="font-medium">Origin of Replication</p>
+                      <p className="text-xs text-muted-foreground mt-1">Required for plasmid replication</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </g>
             )}
             

@@ -58,103 +58,120 @@ export function PlasmidWorkspace({ selectedCDS, onCDSSelect, onClearCDS, isSimul
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
         >
-          <svg width="320" height="320" viewBox="0 0 320 320" className="drop-shadow-lg">
-            {/* Circular backbone - thicker */}
+          <svg width="380" height="380" viewBox="0 0 380 380" className="drop-shadow-lg">
+            {/* Circular backbone - thin gray ring */}
             <circle
-              cx="160"
-              cy="160"
-              r="120"
+              cx="190"
+              cy="190"
+              r="140"
               fill="none"
-              stroke="hsl(var(--primary))"
-              strokeWidth="16"
+              stroke="hsl(var(--muted-foreground) / 0.4)"
+              strokeWidth="6"
               className={cn(
                 "transition-all duration-300",
-                selectedCDS.length > 0 && "stroke-primary/80",
-                isDragOver && "stroke-primary animate-pulse"
+                isDragOver && "stroke-primary/60 animate-pulse"
               )}
             />
             
-            {/* Origin of Replication (ORI) marker */}
-            <g>
-              <circle
-                cx="160"
-                cy="40"
-                r="8"
-                fill="hsl(var(--accent))"
-                stroke="hsl(var(--foreground))"
-                strokeWidth="3"
-              />
-              <text
-                x="160"
-                y="28"
-                textAnchor="middle"
-                className="fill-muted-foreground text-sm font-bold"
-              >
-                ORI
-              </text>
-            </g>
-            
-            {/* CDS Arrows positioned around the circle */}
+            {/* CDS Arc segments positioned around the circle */}
             {selectedCDS.map((cds, index) => {
-              // Calculate position around the circle (avoiding ORI at top)
-              const startAngle = 45; // Start at 45 degrees to avoid ORI
-              const angleSpacing = 270 / Math.max(1, selectedCDS.length - 1); // Spread across 270 degrees
-              const angle = selectedCDS.length === 1 ? 135 : startAngle + (index * angleSpacing);
+              // Calculate position around the circle
+              const startAngle = 30; // Start angle
+              const angleSpacing = 300 / Math.max(1, selectedCDS.length); // Spread across 300 degrees
+              const angle = startAngle + (index * angleSpacing);
+              const arcLength = 60; // Length of each arc in degrees
               const angleRad = (angle * Math.PI) / 180;
+              const endAngleRad = ((angle + arcLength) * Math.PI) / 180;
               
-              // Position on the circle circumference
-              const centerX = 160;
-              const centerY = 160;
-              const radius = 120;
-              const x = centerX + radius * Math.cos(angleRad);
-              const y = centerY + radius * Math.sin(angleRad);
+              // Position for arc
+              const centerX = 190;
+              const centerY = 190;
+              const radius = 140;
               
-              // Arrow direction (tangent to circle)
-              const tangentAngle = angle + 90;
-              const arrowLength = 30;
-              const arrowWidth = 12;
+              // Calculate arc path
+              const startX = centerX + radius * Math.cos(angleRad);
+              const startY = centerY + radius * Math.sin(angleRad);
+              const endX = centerX + radius * Math.cos(endAngleRad);
+              const endY = centerY + radius * Math.sin(endAngleRad);
+              
+              // Label position (outside the circle)
+              const labelAngle = angle + arcLength / 2;
+              const labelAngleRad = (labelAngle * Math.PI) / 180;
+              const labelRadius = radius + 45;
+              const labelX = centerX + labelRadius * Math.cos(labelAngleRad);
+              const labelY = centerY + labelRadius * Math.sin(labelAngleRad);
+              
+              // Text anchor based on position
+              const textAnchor = labelAngle > 90 && labelAngle < 270 ? "end" : "start";
               
               return (
                 <g key={`${cds.id}-${index}`} className="animate-scale-in">
-                  {/* Arrow body */}
+                  {/* Arc segment */}
                   <path
-                    d={`M ${x - arrowLength/2 * Math.cos((tangentAngle * Math.PI) / 180)} ${y - arrowLength/2 * Math.sin((tangentAngle * Math.PI) / 180)}
-                        L ${x + arrowLength/2 * Math.cos((tangentAngle * Math.PI) / 180)} ${y + arrowLength/2 * Math.sin((tangentAngle * Math.PI) / 180)}
-                        L ${x + (arrowLength/2 - 8) * Math.cos((tangentAngle * Math.PI) / 180) + arrowWidth/2 * Math.cos(((tangentAngle + 90) * Math.PI) / 180)} ${y + (arrowLength/2 - 8) * Math.sin((tangentAngle * Math.PI) / 180) + arrowWidth/2 * Math.sin(((tangentAngle + 90) * Math.PI) / 180)}
-                        L ${x + arrowLength/2 * Math.cos((tangentAngle * Math.PI) / 180) + 8 * Math.cos((tangentAngle * Math.PI) / 180)} ${y + arrowLength/2 * Math.sin((tangentAngle * Math.PI) / 180) + 8 * Math.sin((tangentAngle * Math.PI) / 180)}
-                        L ${x + (arrowLength/2 - 8) * Math.cos((tangentAngle * Math.PI) / 180) - arrowWidth/2 * Math.cos(((tangentAngle + 90) * Math.PI) / 180)} ${y + (arrowLength/2 - 8) * Math.sin((tangentAngle * Math.PI) / 180) - arrowWidth/2 * Math.sin(((tangentAngle + 90) * Math.PI) / 180)}
-                        L ${x - arrowLength/2 * Math.cos((tangentAngle * Math.PI) / 180) - arrowWidth/2 * Math.cos(((tangentAngle + 90) * Math.PI) / 180)} ${y - arrowLength/2 * Math.sin((tangentAngle * Math.PI) / 180) - arrowWidth/2 * Math.sin(((tangentAngle + 90) * Math.PI) / 180)}
-                        L ${x - arrowLength/2 * Math.cos((tangentAngle * Math.PI) / 180) + arrowWidth/2 * Math.cos(((tangentAngle + 90) * Math.PI) / 180)} ${y - arrowLength/2 * Math.sin((tangentAngle * Math.PI) / 180) + arrowWidth/2 * Math.sin(((tangentAngle + 90) * Math.PI) / 180)}
-                        Z`}
-                    fill={cds.color}
-                    stroke="white"
-                    strokeWidth="2"
-                    className="drop-shadow-md cursor-pointer hover:opacity-80"
+                    d={`M ${startX} ${startY} A ${radius} ${radius} 0 0 1 ${endX} ${endY}`}
+                    fill="none"
+                    stroke={cds.color}
+                    strokeWidth="18"
+                    strokeLinecap="round"
+                    className="cursor-pointer hover:opacity-80 transition-opacity"
                     style={{ 
-                      filter: `drop-shadow(0 0 8px ${cds.color}60)`
+                      filter: `drop-shadow(0 0 6px ${cds.color}40)`
                     }}
                     onClick={() => !isSimulating && onClearCDS(index)}
                   />
                   
-                  {/* CDS label */}
+                  {/* CDS label outside the circle */}
                   <text
-                    x={x - 25 * Math.cos((tangentAngle * Math.PI) / 180)}
-                    y={y - 25 * Math.sin((tangentAngle * Math.PI) / 180)}
-                    textAnchor="middle"
-                    className="fill-foreground text-xs font-bold pointer-events-none"
+                    x={labelX}
+                    y={labelY}
+                    textAnchor={textAnchor}
+                    className="fill-foreground text-sm font-medium pointer-events-none"
+                    style={{ color: cds.color }}
                   >
-                    {cds.name}
+                    {cds.name} gene
                   </text>
                 </g>
               );
             })}
             
+            {/* Origin of Replication arc at top */}
+            {selectedCDS.length > 0 && (
+              <g>
+                <path
+                  d={`M ${190 + 140 * Math.cos(-30 * Math.PI / 180)} ${190 + 140 * Math.sin(-30 * Math.PI / 180)} A 140 140 0 0 1 ${190 + 140 * Math.cos(30 * Math.PI / 180)} ${190 + 140 * Math.sin(30 * Math.PI / 180)}`}
+                  fill="none"
+                  stroke="#ef4444"
+                  strokeWidth="18"
+                  strokeLinecap="round"
+                  style={{ 
+                    filter: `drop-shadow(0 0 6px #ef444440)`
+                  }}
+                />
+                <text
+                  x="280"
+                  y="90"
+                  textAnchor="start"
+                  className="fill-[#ef4444] text-sm font-medium"
+                >
+                  Origin of
+                </text>
+                <text
+                  x="280"
+                  y="105"
+                  textAnchor="start"
+                  className="fill-[#ef4444] text-sm font-medium"
+                >
+                  replication
+                </text>
+              </g>
+            )}
+            
             {/* Drag feedback overlay */}
             {isDragOver && selectedCDS.length < 4 && (
               <circle
-                cx="160"
-                cy="160"
-                r="120"
+                cx="190"
+                cy="190"
+                r="140"
                 fill="hsl(var(--primary) / 0.1)"
                 stroke="hsl(var(--primary))"
                 strokeWidth="6"
@@ -184,9 +201,8 @@ export function PlasmidWorkspace({ selectedCDS, onCDSSelect, onClearCDS, isSimul
           {/* Center plasmid info when CDS are present */}
           {selectedCDS.length > 0 && (
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center space-y-1 bg-background/90 rounded-full p-3 backdrop-blur-sm border border-border/50">
-                <p className="text-xs font-bold text-foreground">pSB1C3</p>
-                <p className="text-xs text-muted-foreground">{selectedCDS.length} CDS</p>
+              <div className="text-center">
+                <p className="text-lg font-bold text-muted-foreground">pSB1C3 Plasmid</p>
               </div>
             </div>
           )}

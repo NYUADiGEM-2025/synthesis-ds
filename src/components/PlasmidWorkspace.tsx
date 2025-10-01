@@ -76,10 +76,10 @@ export function PlasmidWorkspace({ selectedCDS, onCDSSelect, onClearCDS, isSimul
             {/* CDS Arc segments positioned around the circle */}
             {selectedCDS.map((cds, index) => {
               // Calculate position around the circle
-              const startAngle = 30; // Start angle
-              const angleSpacing = 300 / Math.max(1, selectedCDS.length); // Spread across 300 degrees
+              const startAngle = 70; // Start angle (avoiding top area for ORI)
+              const angleSpacing = 260 / Math.max(1, selectedCDS.length); // Spread across 260 degrees
               const angle = startAngle + (index * angleSpacing);
-              const arcLength = 60; // Length of each arc in degrees
+              const arcLength = 50; // Length of each arc in degrees
               const angleRad = (angle * Math.PI) / 180;
               const endAngleRad = ((angle + arcLength) * Math.PI) / 180;
               
@@ -94,10 +94,12 @@ export function PlasmidWorkspace({ selectedCDS, onCDSSelect, onClearCDS, isSimul
               const endX = centerX + radius * Math.cos(endAngleRad);
               const endY = centerY + radius * Math.sin(endAngleRad);
               
-              // Label position (outside the circle)
+              // Label position - smarter positioning to avoid overlap
               const labelAngle = angle + arcLength / 2;
               const labelAngleRad = (labelAngle * Math.PI) / 180;
-              const labelRadius = radius + 45;
+              
+              // Vary the distance based on position to reduce overlap
+              const labelRadius = radius + 50 + (index % 2) * 10;
               const labelX = centerX + labelRadius * Math.cos(labelAngleRad);
               const labelY = centerY + labelRadius * Math.sin(labelAngleRad);
               
@@ -120,13 +122,32 @@ export function PlasmidWorkspace({ selectedCDS, onCDSSelect, onClearCDS, isSimul
                     onClick={() => !isSimulating && onClearCDS(index)}
                   />
                   
-                  {/* CDS label outside the circle */}
+                  {/* Connector line from arc to label */}
+                  <line
+                    x1={centerX + radius * Math.cos(labelAngleRad)}
+                    y1={centerY + radius * Math.sin(labelAngleRad)}
+                    x2={centerX + (labelRadius - 8) * Math.cos(labelAngleRad)}
+                    y2={centerY + (labelRadius - 8) * Math.sin(labelAngleRad)}
+                    stroke="hsl(var(--muted-foreground) / 0.3)"
+                    strokeWidth="1"
+                    strokeDasharray="2,2"
+                  />
+                  
+                  {/* CDS label with background for better readability */}
+                  <rect
+                    x={textAnchor === "end" ? labelX - 75 : labelX}
+                    y={labelY - 12}
+                    width="75"
+                    height="18"
+                    fill="hsl(var(--background) / 0.95)"
+                    rx="4"
+                  />
                   <text
                     x={labelX}
                     y={labelY}
                     textAnchor={textAnchor}
-                    className="fill-foreground text-sm font-medium pointer-events-none"
-                    style={{ color: cds.color }}
+                    className="text-xs font-medium pointer-events-none"
+                    style={{ fill: cds.color }}
                   >
                     {cds.name} gene
                   </text>
@@ -140,26 +161,36 @@ export function PlasmidWorkspace({ selectedCDS, onCDSSelect, onClearCDS, isSimul
                 <path
                   d={`M ${190 + 140 * Math.cos(-30 * Math.PI / 180)} ${190 + 140 * Math.sin(-30 * Math.PI / 180)} A 140 140 0 0 1 ${190 + 140 * Math.cos(30 * Math.PI / 180)} ${190 + 140 * Math.sin(30 * Math.PI / 180)}`}
                   fill="none"
-                  stroke="#ef4444"
+                  stroke="#8b5cf6"
                   strokeWidth="18"
                   strokeLinecap="round"
                   style={{ 
-                    filter: `drop-shadow(0 0 6px #ef444440)`
+                    filter: `drop-shadow(0 0 6px #8b5cf640)`
                   }}
+                />
+                <rect
+                  x="270"
+                  y="72"
+                  width="90"
+                  height="32"
+                  fill="hsl(var(--background) / 0.95)"
+                  rx="4"
                 />
                 <text
                   x="280"
-                  y="90"
+                  y="85"
                   textAnchor="start"
-                  className="fill-[#ef4444] text-sm font-medium"
+                  className="text-xs font-medium"
+                  fill="#8b5cf6"
                 >
                   Origin of
                 </text>
                 <text
                   x="280"
-                  y="105"
+                  y="99"
                   textAnchor="start"
-                  className="fill-[#ef4444] text-sm font-medium"
+                  className="text-xs font-medium"
+                  fill="#8b5cf6"
                 >
                   replication
                 </text>

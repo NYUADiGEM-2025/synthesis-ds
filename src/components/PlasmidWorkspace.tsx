@@ -58,12 +58,12 @@ export function PlasmidWorkspace({ selectedCDS, onCDSSelect, onClearCDS, isSimul
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
         >
-          <svg width="500" height="500" viewBox="0 0 500 500" className="drop-shadow-lg">
+          <svg width="380" height="380" viewBox="0 0 380 380" className="drop-shadow-lg">
             {/* Circular backbone - thin gray ring */}
             <circle
-              cx="250"
-              cy="250"
-              r="180"
+              cx="190"
+              cy="190"
+              r="140"
               fill="none"
               stroke="hsl(var(--muted-foreground) / 0.4)"
               strokeWidth="6"
@@ -84,9 +84,9 @@ export function PlasmidWorkspace({ selectedCDS, onCDSSelect, onClearCDS, isSimul
               const endAngleRad = ((angle + arcLength) * Math.PI) / 180;
               
               // Position for arc
-              const centerX = 250;
-              const centerY = 250;
-              const radius = 180;
+              const centerX = 190;
+              const centerY = 190;
+              const radius = 140;
               
               // Calculate arc path
               const startX = centerX + radius * Math.cos(angleRad);
@@ -99,7 +99,7 @@ export function PlasmidWorkspace({ selectedCDS, onCDSSelect, onClearCDS, isSimul
               const labelAngleRad = (labelAngle * Math.PI) / 180;
               
               // Vary the distance based on position to reduce overlap
-              const labelRadius = radius + 65 + (index % 2) * 12;
+              const labelRadius = radius + 50 + (index % 2) * 10;
               const labelX = centerX + labelRadius * Math.cos(labelAngleRad);
               const labelY = centerY + labelRadius * Math.sin(labelAngleRad);
               
@@ -113,7 +113,7 @@ export function PlasmidWorkspace({ selectedCDS, onCDSSelect, onClearCDS, isSimul
                     d={`M ${startX} ${startY} A ${radius} ${radius} 0 0 1 ${endX} ${endY}`}
                     fill="none"
                     stroke={cds.color}
-                    strokeWidth="22"
+                    strokeWidth="18"
                     strokeLinecap="round"
                     className="cursor-pointer hover:opacity-80 transition-opacity"
                     style={{ 
@@ -126,27 +126,27 @@ export function PlasmidWorkspace({ selectedCDS, onCDSSelect, onClearCDS, isSimul
                   <line
                     x1={centerX + radius * Math.cos(labelAngleRad)}
                     y1={centerY + radius * Math.sin(labelAngleRad)}
-                    x2={centerX + (labelRadius - 10) * Math.cos(labelAngleRad)}
-                    y2={centerY + (labelRadius - 10) * Math.sin(labelAngleRad)}
+                    x2={centerX + (labelRadius - 8) * Math.cos(labelAngleRad)}
+                    y2={centerY + (labelRadius - 8) * Math.sin(labelAngleRad)}
                     stroke="hsl(var(--muted-foreground) / 0.3)"
-                    strokeWidth="1.5"
-                    strokeDasharray="3,3"
+                    strokeWidth="1"
+                    strokeDasharray="2,2"
                   />
                   
                   {/* CDS label with background for better readability */}
                   <rect
-                    x={textAnchor === "end" ? labelX - 85 : labelX}
-                    y={labelY - 14}
-                    width="85"
-                    height="22"
+                    x={textAnchor === "end" ? labelX - 75 : labelX}
+                    y={labelY - 12}
+                    width="75"
+                    height="18"
                     fill="hsl(var(--background) / 0.95)"
-                    rx="5"
+                    rx="4"
                   />
                   <text
                     x={labelX}
                     y={labelY}
                     textAnchor={textAnchor}
-                    className="text-sm font-medium pointer-events-none"
+                    className="text-xs font-medium pointer-events-none"
                     style={{ fill: cds.color }}
                   >
                     {cds.name} gene
@@ -159,37 +159,37 @@ export function PlasmidWorkspace({ selectedCDS, onCDSSelect, onClearCDS, isSimul
             {selectedCDS.length > 0 && (
               <g>
                 <path
-                  d={`M ${250 + 180 * Math.cos(-30 * Math.PI / 180)} ${250 + 180 * Math.sin(-30 * Math.PI / 180)} A 180 180 0 0 1 ${250 + 180 * Math.cos(30 * Math.PI / 180)} ${250 + 180 * Math.sin(30 * Math.PI / 180)}`}
+                  d={`M ${190 + 140 * Math.cos(-30 * Math.PI / 180)} ${190 + 140 * Math.sin(-30 * Math.PI / 180)} A 140 140 0 0 1 ${190 + 140 * Math.cos(30 * Math.PI / 180)} ${190 + 140 * Math.sin(30 * Math.PI / 180)}`}
                   fill="none"
                   stroke="#8b5cf6"
-                  strokeWidth="22"
+                  strokeWidth="18"
                   strokeLinecap="round"
                   style={{ 
                     filter: `drop-shadow(0 0 6px #8b5cf640)`
                   }}
                 />
                 <rect
-                  x="355"
-                  y="115"
-                  width="105"
-                  height="38"
+                  x="270"
+                  y="72"
+                  width="90"
+                  height="32"
                   fill="hsl(var(--background) / 0.95)"
-                  rx="5"
+                  rx="4"
                 />
                 <text
-                  x="365"
-                  y="132"
+                  x="280"
+                  y="85"
                   textAnchor="start"
-                  className="text-sm font-medium"
+                  className="text-xs font-medium"
                   fill="#8b5cf6"
                 >
                   Origin of
                 </text>
                 <text
-                  x="365"
-                  y="148"
+                  x="280"
+                  y="99"
                   textAnchor="start"
-                  className="text-sm font-medium"
+                  className="text-xs font-medium"
                   fill="#8b5cf6"
                 >
                   replication
@@ -200,9 +200,9 @@ export function PlasmidWorkspace({ selectedCDS, onCDSSelect, onClearCDS, isSimul
             {/* Drag feedback overlay */}
             {isDragOver && selectedCDS.length < 4 && (
               <circle
-                cx="250"
-                cy="250"
-                r="180"
+                cx="190"
+                cy="190"
+                r="140"
                 fill="hsl(var(--primary) / 0.1)"
                 stroke="hsl(var(--primary))"
                 strokeWidth="6"
@@ -233,7 +233,7 @@ export function PlasmidWorkspace({ selectedCDS, onCDSSelect, onClearCDS, isSimul
           {selectedCDS.length > 0 && (
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="text-center">
-                <p className="text-xl font-bold text-muted-foreground">pSB1C3 Plasmid</p>
+                <p className="text-lg font-bold text-muted-foreground">pSB1C3 Plasmid</p>
               </div>
             </div>
           )}

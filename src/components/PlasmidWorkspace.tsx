@@ -58,7 +58,7 @@ export function PlasmidWorkspace({ selectedCDS, onCDSSelect, onClearCDS, isSimul
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
         >
-          <svg width="500" height="500" viewBox="0 0 500 500" className="drop-shadow-lg">
+          <svg width="620" height="620" viewBox="0 0 500 500" className="drop-shadow-lg max-w-full lg:max-w-[560px] xl:max-w-[620px]">
             {/* Circular backbone - thin gray ring */}
             <circle
               cx="250"

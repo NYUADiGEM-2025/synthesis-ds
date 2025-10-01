@@ -151,9 +151,9 @@ export function CentralDogmaSimulator() {
         {/* Main Interface */}
         {!simulationState.isActive ? (
           /* Three-panel layout for setup */
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 min-h-[700px]">
+          <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr_320px] xl:grid-cols-[340px_1fr_340px] gap-6 min-h-[700px]">
             {/* Parts Bin */}
-            <div className="lg:col-span-1">
+            <div>
               <PartsBin
                 selectedCDS={selectedCDS}
                 onCDSSelect={handleCDSSelect}
@@ -163,8 +163,8 @@ export function CentralDogmaSimulator() {
               />
             </div>
 
-            {/* Plasmid Workspace */}
-            <div className="lg:col-span-1">
+            {/* Plasmid Workspace - Expanded center column */}
+            <div className="flex justify-center">
               <PlasmidWorkspace
                 selectedCDS={selectedCDS}
                 onCDSSelect={handleCDSSelect}
@@ -175,7 +175,7 @@ export function CentralDogmaSimulator() {
             </div>
 
             {/* Simulation Panel */}
-            <div className="lg:col-span-1">
+            <div>
               <SimulationPanel
                 selectedCDS={selectedCDS}
                 simulationState={simulationState}

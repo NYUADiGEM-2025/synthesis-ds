@@ -140,7 +140,7 @@ export function CentralDogmaSimulator() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-5xl font-bold text-foreground mb-3 font-inter tracking-tight">
+          <h1 className="text-5xl font-bold mb-3 font-inter tracking-tight bg-gradient-to-r from-[hsl(200_100%_45%)] via-[hsl(280_85%_55%)] to-[hsl(340_90%_60%)] bg-clip-text text-transparent">
             Synthesis
           </h1>
           <p className="text-xl text-muted-foreground font-inter font-light">

@@ -141,10 +141,10 @@ export function CentralDogmaSimulator() {
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-5xl font-bold text-foreground mb-3 font-inter tracking-tight">
-            Central Dogma Simulator
+            Synthesis
           </h1>
           <p className="text-xl text-muted-foreground font-inter font-light">
-            Interactive visualization of gene expression from DNA to protein
+            An interactive gene design and expression simulator integrating synthetic-biology principles with the central dogma of molecular biology (DNA → RNA → protein).
           </p>
         </div>
 

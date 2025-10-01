@@ -144,7 +144,7 @@ export function CentralDogmaSimulator() {
             Synthesis
           </h1>
           <p className="text-xl text-muted-foreground font-inter font-light">
-            An interactive gene design and expression simulator integrating synthetic-biology principles with the central dogma of molecular biology (DNA → RNA → protein).
+            An interactive gene design and expression simulator integrating synthetic-biology principles with the central dogma of molecular biology.
           </p>
         </div>
 

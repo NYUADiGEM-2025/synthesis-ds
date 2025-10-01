@@ -94,17 +94,38 @@ export function PlasmidWorkspace({ selectedCDS, onCDSSelect, onClearCDS, isSimul
               const endX = centerX + radius * Math.cos(endAngleRad);
               const endY = centerY + radius * Math.sin(endAngleRad);
               
-              // Label position - smarter positioning to avoid overlap
+              // Label position - improved positioning for all angles
               const labelAngle = angle + arcLength / 2;
               const labelAngleRad = (labelAngle * Math.PI) / 180;
               
-              // Vary the distance based on position to reduce overlap
-              const labelRadius = radius + 65 + (index % 2) * 12;
-              const labelX = centerX + labelRadius * Math.cos(labelAngleRad);
-              const labelY = centerY + labelRadius * Math.sin(labelAngleRad);
+              // Calculate if label is on left or right side of circle
+              const isLeftSide = labelAngle > 90 && labelAngle < 270;
+              
+              // Position labels further out with alternating distances to avoid overlap
+              const baseLabelRadius = radius + 75;
+              const labelRadius = baseLabelRadius + (index % 2) * 15;
+              
+              // Calculate label position
+              let labelX = centerX + labelRadius * Math.cos(labelAngleRad);
+              let labelY = centerY + labelRadius * Math.sin(labelAngleRad);
               
               // Text anchor based on position
-              const textAnchor = labelAngle > 90 && labelAngle < 270 ? "end" : "start";
+              const textAnchor = isLeftSide ? "end" : "start";
+              
+              // Adjust label position to ensure it stays within viewBox bounds
+              const labelWidth = 85;
+              const padding = 15;
+              
+              if (isLeftSide) {
+                // Left side labels - ensure they don't go off the left edge
+                labelX = Math.max(labelWidth + padding, labelX);
+              } else {
+                // Right side labels - ensure they don't go off the right edge
+                labelX = Math.min(500 - labelWidth - padding, labelX);
+              }
+              
+              // Ensure labels don't go off top or bottom
+              labelY = Math.max(padding + 14, Math.min(500 - padding, labelY));
               
               return (
                 <g key={`${cds.id}-${index}`} className="animate-scale-in">

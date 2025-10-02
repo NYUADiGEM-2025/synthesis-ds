@@ -9,35 +9,32 @@ export function AtomLogo() {
 
   return (
     <div className="relative flex items-center justify-center" style={{ width: '100%', height: '400px' }}>
-      {/* Orbital rings */}
+      {/* Orbital rings matching electron paths */}
       <div className="absolute inset-0 flex items-center justify-center">
-        {/* Ring 1 - horizontal */}
+        {/* Ring 1 - matches orbit1 */}
         <div 
-          className="absolute border-2 border-primary/30 rounded-full"
+          className="absolute border-2 border-primary/20 rounded-full"
           style={{
             width: '600px',
-            height: '200px',
-            transform: 'rotateX(75deg)',
+            height: '600px',
           }}
         />
         
-        {/* Ring 2 - diagonal */}
+        {/* Ring 2 - matches orbit2 */}
         <div 
-          className="absolute border-2 border-primary/30 rounded-full"
+          className="absolute border-2 border-primary/20 rounded-full"
           style={{
-            width: '600px',
-            height: '200px',
-            transform: 'rotateX(75deg) rotateZ(60deg)',
+            width: '560px',
+            height: '560px',
           }}
         />
         
-        {/* Ring 3 - diagonal opposite */}
+        {/* Ring 3 - matches orbit3 */}
         <div 
-          className="absolute border-2 border-primary/30 rounded-full"
+          className="absolute border-2 border-primary/20 rounded-full"
           style={{
-            width: '600px',
-            height: '200px',
-            transform: 'rotateX(75deg) rotateZ(-60deg)',
+            width: '580px',
+            height: '580px',
           }}
         />
       </div>

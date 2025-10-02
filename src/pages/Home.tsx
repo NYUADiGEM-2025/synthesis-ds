@@ -122,17 +122,14 @@ const Home = () => {
           </h2>
           
           <div className="space-y-6 text-lg text-muted-foreground font-inter leading-relaxed">
-            <div className="flex gap-4">
-              <span className="text-foreground">-</span>
-              <p>
-                The foundation of Molecular Biology is built on the Central Dogma Theory. Discovered 
-                by Francis Crick, this theory explains the flow of genetic information in cells. Cells move 
-                information <span className="font-semibold text-foreground">from DNA → RNA → protein</span>. DNA stores the instructions, RNA is a 
-                working copy made by RNA polymerase (<span className="font-semibold text-foreground">transcription</span>), and ribosomes read that RNA 
-                in three-letter <span className="font-semibold text-foreground">codons</span> to build a protein (<span className="font-semibold text-foreground">translation</span>). Change the DNA and you can 
-                change the protein's sequence—and its function.<sup>1</sup>
-              </p>
-            </div>
+            <p>
+              - The foundation of Molecular Biology is built on the Central Dogma Theory. Discovered 
+              by Francis Crick, this theory explains the flow of genetic information in cells. Cells move 
+              information <span className="font-semibold text-foreground">from DNA → RNA → protein</span>. DNA stores the instructions, RNA is a 
+              working copy made by RNA polymerase (<span className="font-semibold text-foreground">transcription</span>), and ribosomes read that RNA 
+              in three-letter <span className="font-semibold text-foreground">codons</span> to build a protein (<span className="font-semibold text-foreground">translation</span>). Change the DNA and you can 
+              change the protein's sequence—and its function.<sup>1</sup>
+            </p>
 
             <p className="pl-8">
               So then what's synthetic biology? Synthetic biology is the practice of redesigning 

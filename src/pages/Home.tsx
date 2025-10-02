@@ -213,6 +213,26 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* References Section */}
+      <section className="py-20 px-4">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-8 font-inter">
+            References
+          </h2>
+          
+          <div className="space-y-4 text-lg text-muted-foreground font-inter leading-relaxed">
+            <p>
+              (1) National Human Genome Research Institute. <span className="italic">Synthetic Biology</span>. Genome.gov. 
+              https://www.genome.gov/about-genomics/policy-issues/Synthetic-Biology.
+            </p>
+            <p>
+              (2) LibreTexts. <span className="italic">4.1: Central Dogma of Molecular Biology</span>. Biology LibreTexts. 
+              https://bio.libretexts.org/Bookshelves/Introductory_and_General_Biology/Introductory_Biology_(CK-12)/04%3A_Molecular_Biology/4.01%3A_Central_Dogma_of_Molecular_Biology.
+            </p>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

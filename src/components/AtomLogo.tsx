@@ -9,89 +9,62 @@ export function AtomLogo() {
 
   return (
     <div className="relative flex items-center justify-center" style={{ width: '100%', height: '400px' }}>
-      {/* Orbital rings with 3D rotation */}
+      {/* Orbital rings matching electron paths */}
       <div className="absolute inset-0 flex items-center justify-center">
-        {/* Ring 1 - horizontal ellipse */}
+        {/* Ring 1 - matches orbit1 */}
         <div 
-          className="absolute border-2 border-primary/30 rounded-full"
+          className="absolute border-2 border-primary/20 rounded-full"
           style={{
             width: '600px',
-            height: '200px',
-            transform: 'rotateX(75deg)',
+            height: '600px',
           }}
         />
         
-        {/* Ring 2 - diagonal */}
+        {/* Ring 2 - matches orbit2 */}
         <div 
-          className="absolute border-2 border-primary/30 rounded-full"
+          className="absolute border-2 border-primary/20 rounded-full"
           style={{
-            width: '600px',
-            height: '200px',
-            transform: 'rotateX(75deg) rotateZ(60deg)',
+            width: '560px',
+            height: '560px',
           }}
         />
         
-        {/* Ring 3 - diagonal opposite */}
+        {/* Ring 3 - matches orbit3 */}
         <div 
-          className="absolute border-2 border-primary/30 rounded-full"
+          className="absolute border-2 border-primary/20 rounded-full"
           style={{
-            width: '600px',
-            height: '200px',
-            transform: 'rotateX(75deg) rotateZ(-60deg)',
+            width: '580px',
+            height: '580px',
           }}
         />
       </div>
 
-      {/* Electrons moving along the orbital paths */}
+      {/* Electrons */}
       {mounted && (
         <>
-          {/* Electron 1 - cyan on horizontal orbit */}
+          {/* Electron 1 - cyan */}
           <div 
-            className="absolute"
+            className="absolute w-6 h-6 rounded-full bg-[hsl(var(--egfp))] shadow-lg animate-orbit-1"
             style={{
-              transform: 'rotateX(75deg)',
+              animation: 'orbit1 4s linear infinite',
             }}
-          >
-            <div 
-              className="w-6 h-6 rounded-full bg-[hsl(var(--egfp))] shadow-lg"
-              style={{
-                position: 'absolute',
-                animation: 'orbit1 4s linear infinite',
-              }}
-            />
-          </div>
+          />
           
-          {/* Electron 2 - coral/pink on diagonal orbit */}
+          {/* Electron 2 - coral/pink */}
           <div 
-            className="absolute"
+            className="absolute w-5 h-5 rounded-full bg-[hsl(var(--mrfp1))] shadow-lg animate-orbit-2"
             style={{
-              transform: 'rotateX(75deg) rotateZ(60deg)',
+              animation: 'orbit2 3s linear infinite',
             }}
-          >
-            <div 
-              className="w-5 h-5 rounded-full bg-[hsl(var(--mrfp1))] shadow-lg"
-              style={{
-                position: 'absolute',
-                animation: 'orbit2 3s linear infinite',
-              }}
-            />
-          </div>
+          />
           
-          {/* Electron 3 - yellow on opposite diagonal orbit */}
+          {/* Electron 3 - yellow */}
           <div 
-            className="absolute"
+            className="absolute w-5 h-5 rounded-full bg-[hsl(var(--accent))] shadow-lg animate-orbit-3"
             style={{
-              transform: 'rotateX(75deg) rotateZ(-60deg)',
+              animation: 'orbit3 5s linear infinite',
             }}
-          >
-            <div 
-              className="w-5 h-5 rounded-full bg-[hsl(var(--accent))] shadow-lg"
-              style={{
-                position: 'absolute',
-                animation: 'orbit3 5s linear infinite',
-              }}
-            />
-          </div>
+          />
         </>
       )}
 
@@ -103,100 +76,28 @@ export function AtomLogo() {
       <style>{`
         @keyframes orbit1 {
           0% {
-            left: 50%;
-            top: 50%;
-            margin-left: 300px;
-            margin-top: 0px;
-          }
-          25% {
-            left: 50%;
-            top: 50%;
-            margin-left: 0px;
-            margin-top: 100px;
-          }
-          50% {
-            left: 50%;
-            top: 50%;
-            margin-left: -300px;
-            margin-top: 0px;
-          }
-          75% {
-            left: 50%;
-            top: 50%;
-            margin-left: 0px;
-            margin-top: -100px;
+            transform: rotateZ(0deg) translateX(300px) rotateZ(0deg);
           }
           100% {
-            left: 50%;
-            top: 50%;
-            margin-left: 300px;
-            margin-top: 0px;
+            transform: rotateZ(360deg) translateX(300px) rotateZ(-360deg);
           }
         }
         
         @keyframes orbit2 {
           0% {
-            left: 50%;
-            top: 50%;
-            margin-left: 300px;
-            margin-top: 0px;
-          }
-          25% {
-            left: 50%;
-            top: 50%;
-            margin-left: 0px;
-            margin-top: 100px;
-          }
-          50% {
-            left: 50%;
-            top: 50%;
-            margin-left: -300px;
-            margin-top: 0px;
-          }
-          75% {
-            left: 50%;
-            top: 50%;
-            margin-left: 0px;
-            margin-top: -100px;
+            transform: rotateZ(120deg) translateX(280px) rotateZ(-120deg);
           }
           100% {
-            left: 50%;
-            top: 50%;
-            margin-left: 300px;
-            margin-top: 0px;
+            transform: rotateZ(480deg) translateX(280px) rotateZ(-480deg);
           }
         }
         
         @keyframes orbit3 {
           0% {
-            left: 50%;
-            top: 50%;
-            margin-left: 300px;
-            margin-top: 0px;
-          }
-          25% {
-            left: 50%;
-            top: 50%;
-            margin-left: 0px;
-            margin-top: 100px;
-          }
-          50% {
-            left: 50%;
-            top: 50%;
-            margin-left: -300px;
-            margin-top: 0px;
-          }
-          75% {
-            left: 50%;
-            top: 50%;
-            margin-left: 0px;
-            margin-top: -100px;
+            transform: rotateZ(240deg) translateX(290px) rotateZ(-240deg);
           }
           100% {
-            left: 50%;
-            top: 50%;
-            margin-left: 300px;
-            margin-top: 0px;
+            transform: rotateZ(600deg) translateX(290px) rotateZ(-600deg);
           }
         }
       `}</style>

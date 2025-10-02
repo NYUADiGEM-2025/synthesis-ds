@@ -40,7 +40,7 @@ export function AtomLogo() {
       )}
 
       {/* Nucleus - Synthesis text */}
-      <h1 className="relative z-10 text-8xl md:text-9xl font-bold text-foreground font-inter tracking-tight">
+      <h1 className="relative z-10 text-8xl md:text-9xl font-black text-[#1e293b] font-inter tracking-tighter" style={{ fontWeight: 900 }}>
         Synthesis
       </h1>
 

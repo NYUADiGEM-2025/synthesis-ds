@@ -117,14 +117,4 @@ All colors MUST be HSL.
     min-height: 100vh;
     font-family: 'Inter', sans-serif;
   }
-
-  /* Calm hero CTA hover effect */
-  .hero-cta {
-    transition: transform 200ms ease, box-shadow 200ms ease;
-  }
-
-  .hero-cta:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 8px 20px rgba(2, 6, 23, 0.12);
-  }
 }

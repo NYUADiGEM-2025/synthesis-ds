@@ -1,6 +1,7 @@
 import { Navigation } from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { AtomLogo } from "@/components/AtomLogo";
 import { Dna } from "lucide-react";
 
 const Home = () => {
@@ -11,9 +12,7 @@ const Home = () => {
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-4">
         <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-8xl md:text-9xl font-bold text-foreground mb-6 font-inter tracking-tight">
-            Synthesis
-          </h1>
+          <AtomLogo />
           <p className="text-2xl md:text-3xl text-muted-foreground font-inter font-light mb-12">
             warning: this site may talk about biology
           </p>

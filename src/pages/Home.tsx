@@ -3,15 +3,33 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { AtomLogo } from "@/components/AtomLogo";
 import { Dna } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const Home = () => {
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <div className="min-h-screen">
       <Navigation />
       
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4">
-        <div className="max-w-7xl mx-auto text-center">
+      <section className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden">
+        <div 
+          className="max-w-7xl mx-auto text-center"
+          style={{
+            transform: `translateY(${scrollY * 0.5}px)`,
+            opacity: 1 - scrollY / 600
+          }}
+        >
           <AtomLogo />
           <p className="text-2xl md:text-3xl text-muted-foreground font-inter font-light mb-12">
             warning: this site may talk about biology

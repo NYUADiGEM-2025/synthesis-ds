@@ -121,24 +121,25 @@ const Home = () => {
             The Biology Behind it
           </h2>
           
-          <div className="space-y-6 text-lg text-muted-foreground font-inter leading-relaxed">
+          <div className="space-y-6 text-xl text-muted-foreground font-inter font-light leading-relaxed">
             <p>
-              - The foundation of Molecular Biology is built on the Central Dogma Theory. Discovered 
+              The foundation of Molecular Biology is built on the Central Dogma Theory. Discovered 
               by Francis Crick, this theory explains the flow of genetic information in cells. Cells move 
               information <span className="font-semibold text-foreground">from DNA → RNA → protein</span>. DNA stores the instructions, RNA is a 
               working copy made by RNA polymerase (<span className="font-semibold text-foreground">transcription</span>), and ribosomes read that RNA 
               in three-letter <span className="font-semibold text-foreground">codons</span> to build a protein (<span className="font-semibold text-foreground">translation</span>). Change the DNA and you can 
-              change the protein's sequence—and its function.<sup>1</sup>
+              change the protein's sequence—and its function.
             </p>
 
-            <p className="pl-8">
+            <p>
               So then what's synthetic biology? Synthetic biology is the practice of redesigning 
               organisms by <span className="font-semibold text-foreground">editing and assembling DNA</span> so cells do specific, useful tasks. By 
               choosing parts such as promoters, coding sequences, and regulators, researchers 
-              program microbes to produce drugs, recycle waste, sense toxins, or improve agriculture.<sup>2</sup> In short, it's biology built <span className="font-semibold text-foreground">like engineering</span>.
+              program microbes to produce drugs, recycle waste, sense toxins, or improve agriculture. 
+              In short, it's biology built <span className="font-semibold text-foreground">like engineering</span>.
             </p>
 
-            <p className="pl-8">
+            <p>
               In the lab, we load <span className="font-semibold text-foreground">genes that encode the abilities we want</span> onto a circular DNA 
               <span className="font-semibold text-foreground"> plasmid</span>- a small, self-replicating DNA molecule - and introduce it into bacteria such as 
               <em> E. coli</em> (<span className="font-semibold text-foreground">transformation</span>). Cells that keep the plasmid gain the encoded trait—for 

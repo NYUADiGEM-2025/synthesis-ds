@@ -138,15 +138,6 @@ export function CentralDogmaSimulator() {
   return (
     <div className="min-h-screen p-4">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-5xl font-bold text-foreground mb-3 font-inter tracking-tight">
-            Synthesis
-          </h1>
-          <p className="text-xl text-muted-foreground font-inter font-light">
-            An interactive gene design and expression simulator integrating synthetic-biology principles with the central dogma of molecular biology.
-          </p>
-        </div>
 
         {/* Main Interface */}
         {!simulationState.isActive ? (

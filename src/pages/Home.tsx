@@ -45,6 +45,9 @@ const Home = () => {
       {/* About Section */}
       <section className="py-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
+          <div className="flex justify-center mb-6">
+            <Dna className="w-16 h-16 text-primary" />
+          </div>
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6 font-inter">
             The central dogma, visualized
           </h2>

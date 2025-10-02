@@ -148,6 +148,71 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* Parts Library Section */}
+      <section className="py-20 px-4">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-8 font-inter">
+            Parts library
+          </h2>
+          
+          <div className="space-y-8 text-lg text-muted-foreground font-inter leading-relaxed">
+            <div>
+              <h3 className="text-2xl font-bold text-foreground mb-4 font-inter">
+                Plasmid backbone
+              </h3>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>
+                  <span className="font-semibold text-foreground">pSB1C3 (BioBrick standard):</span> A circular DNA "carrier" that holds your gene and lets 
+                  bacteria copy it. It includes the pieces a cell needs to keep the DNA (origin of 
+                  replication) and select for it (antibiotic marker), so your gene can be maintained and 
+                  expressed reliably.
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-2xl font-bold text-foreground mb-4 font-inter">
+                Coding Sequences (CDS)
+              </h3>
+              <p className="mb-4">
+                A CDS is the stretch of DNA that actually <span className="font-semibold text-foreground">codes for a protein</span> - it's what ribosomes read (via 
+                mRNA) to build the amino-acid chain. Swapping the CDS changes <span className="font-semibold text-foreground">which protein</span> the cell 
+                makes.
+              </p>
+              <ul className="space-y-2">
+                <li>
+                  <span className="font-semibold text-foreground">I. EGFP:</span> Enhanced Green Fluorescent Protein; bright green reporter widely used in labs.
+                </li>
+                <li>
+                  <span className="font-semibold text-foreground">II. mRFP1:</span> Monomeric Red Fluorescent Protein; classic red reporter derived from DsRed.
+                </li>
+                <li>
+                  <span className="font-semibold text-foreground">III. mTagBFP2:</span> Bright blue fluorescent protein optimized for clear, high-contrast blue signals.
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-2xl font-bold text-foreground mb-4 font-inter">
+                How to use these parts
+              </h3>
+              <ol className="list-decimal pl-6 space-y-2">
+                <li>Pick a CDS from the Parts Bin and drag it onto the plasmid workspace.</li>
+                <li>Press <span className="font-semibold text-foreground">Start Simulation</span> to see DNA → RNA → protein play out.</li>
+                <li>Compare reporters (green/red/blue) to see how swapping the CDS changes the output while the backbone stays the same.</li>
+              </ol>
+            </div>
+
+            <div>
+              <p>
+                <span className="italic">Coming soon:</span> promoters/RBS/terminators and more reporters—so you can explore expression 
+                strength, timing, and regulation.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

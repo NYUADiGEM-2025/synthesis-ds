@@ -32,7 +32,7 @@ const Home = () => {
         >
           <AtomLogo />
           <p className="text-2xl md:text-3xl text-muted-foreground font-inter font-light mb-12">
-            warning: this site may talk about biology
+            Warning: This site may talk about Biology.
           </p>
           <Link to="/simulator">
             <Button size="lg" className="text-lg px-8 py-6 font-inter">

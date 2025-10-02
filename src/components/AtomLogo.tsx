@@ -46,11 +46,7 @@ function AtomScene() {
       <directionalLight position={[5, 5, 5]} intensity={1} />
       <pointLight position={[0, 0, 0]} intensity={1} color="#78DCE8" />
       
-      {/* Center nucleus */}
-      <mesh>
-        <sphereGeometry args={[0.3, 32, 32]} />
-        <meshStandardMaterial color="#78DCE8" emissive="#78DCE8" emissiveIntensity={0.5} />
-      </mesh>
+      {/* No center nucleus - "Synthesis" text is the nucleus */}
       
       {/* Three orbits at different rotations */}
       <Orbit rotation={[Math.PI / 3, 0, 0]} color="#78DCE8" />
@@ -81,8 +77,12 @@ export function AtomLogo() {
         </Canvas>
       </div>
 
-      {/* Synthesis text - positioned above 3D scene */}
-      <h1 className="relative z-10 text-8xl md:text-9xl font-bold text-foreground font-inter tracking-tight">
+      {/* Synthesis text - the nucleus */}
+      <h1 className="relative z-10 text-8xl md:text-9xl font-bold text-foreground font-inter tracking-tight"
+          style={{
+            textShadow: '0 0 40px rgba(120, 220, 232, 0.6), 0 0 80px rgba(120, 220, 232, 0.3)',
+            filter: 'drop-shadow(0 0 20px rgba(120, 220, 232, 0.4))'
+          }}>
         Synthesis
       </h1>
     </div>

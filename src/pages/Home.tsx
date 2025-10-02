@@ -42,6 +42,20 @@ const Home = () => {
         </div>
       </section>
 
+      {/* About Section */}
+      <section className="py-20 px-4">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6 font-inter">
+            The central dogma, visualized
+          </h2>
+          <p className="text-xl text-muted-foreground font-inter font-light leading-relaxed">
+            An interactive gene design and expression simulator integrating synthetic-biology principles 
+            with the central dogma of molecular biology. Design your plasmid, select coding sequences, 
+            and watch DNA transcribe to RNA and translate to proteins in real-time.
+          </p>
+        </div>
+      </section>
+
       {/* What is Synthesis Section */}
       <section className="py-20 px-4">
         <div className="max-w-4xl mx-auto">
@@ -55,20 +69,6 @@ const Home = () => {
             fast. So we built <span className="font-semibold text-foreground">Synthesis</span>, a web app from the NYUAD iGEM 2025 team, that turns 
             explanations into action: drag parts to design plasmids and watch DNA → RNA → 
             protein play out in real time—quick, interactive, and jargon-light.
-          </p>
-        </div>
-      </section>
-
-      {/* About Section */}
-      <section className="py-20 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6 font-inter">
-            The central dogma, visualized
-          </h2>
-          <p className="text-xl text-muted-foreground font-inter font-light leading-relaxed">
-            An interactive gene design and expression simulator integrating synthetic-biology principles 
-            with the central dogma of molecular biology. Design your plasmid, select coding sequences, 
-            and watch DNA transcribe to RNA and translate to proteins in real-time.
           </p>
         </div>
       </section>

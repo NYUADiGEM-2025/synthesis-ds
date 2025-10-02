@@ -1,7 +1,7 @@
 import { Navigation } from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { AtomLogo } from "@/components/AtomLogo";
+import SynthesisWordmark from "@/components/SynthesisWordmark";
 import { Dna } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -30,12 +30,12 @@ const Home = () => {
             opacity: 1 - scrollY / 600
           }}
         >
-          <AtomLogo />
+          <SynthesisWordmark />
           <p className="text-2xl md:text-3xl text-muted-foreground font-inter font-light mb-12">
             warning: this site may talk about biology
           </p>
           <Link to="/simulator">
-            <Button size="lg" className="text-lg px-8 py-6 font-inter">
+            <Button size="lg" className="text-lg px-8 py-6 font-inter hero-cta">
               Launch Simulator
             </Button>
           </Link>

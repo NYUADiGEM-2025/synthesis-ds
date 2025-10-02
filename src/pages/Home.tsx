@@ -12,7 +12,7 @@ const Home = () => {
       <section className="pt-32 pb-20 px-4">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="text-8xl md:text-9xl font-bold text-foreground mb-6 font-inter tracking-tight">
-            synthesis
+            Synthesis
           </h1>
           <p className="text-2xl md:text-3xl text-muted-foreground font-inter font-light mb-12">
             warning: this site may talk about biology

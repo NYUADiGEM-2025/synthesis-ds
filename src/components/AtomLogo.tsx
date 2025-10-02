@@ -48,19 +48,19 @@ function AtomScene() {
       
       {/* No center nucleus - "Synthesis" text is the nucleus */}
       
-      {/* Three orbits at different rotations */}
-      <Orbit rotation={[Math.PI / 3, 0, 0]} color="#78DCE8" />
-      <Orbit rotation={[Math.PI / 3, 0, Math.PI / 3]} color="#78DCE8" />
-      <Orbit rotation={[Math.PI / 3, 0, -Math.PI / 3]} color="#78DCE8" />
+      {/* Three orbits at different rotations to create sphere effect */}
+      <Orbit rotation={[Math.PI / 2, 0, 0]} color="#78DCE8" />
+      <Orbit rotation={[0, Math.PI / 2, 0]} color="#78DCE8" />
+      <Orbit rotation={[Math.PI / 4, Math.PI / 4, 0]} color="#78DCE8" />
       
       {/* Electrons on different orbits */}
-      <group rotation={[Math.PI / 3, 0, 0]}>
+      <group rotation={[Math.PI / 2, 0, 0]}>
         <Electron orbitRadius={2.8} speed={0.5} color="#FF9B85" offset={0} />
       </group>
-      <group rotation={[Math.PI / 3, 0, Math.PI / 3]}>
+      <group rotation={[0, Math.PI / 2, 0]}>
         <Electron orbitRadius={2.8} speed={0.6} color="#FFE66D" offset={2} />
       </group>
-      <group rotation={[Math.PI / 3, 0, -Math.PI / 3]}>
+      <group rotation={[Math.PI / 4, Math.PI / 4, 0]}>
         <Electron orbitRadius={2.8} speed={0.4} color="#78DCE8" offset={4} />
       </group>
     </group>
@@ -72,7 +72,7 @@ export function AtomLogo() {
     <div className="relative flex items-center justify-center" style={{ width: '100%', minHeight: '400px', padding: '2rem' }}>
       {/* 3D Canvas - positioned behind text */}
       <div className="absolute inset-0" style={{ pointerEvents: 'none', zIndex: 0 }}>
-        <Canvas camera={{ position: [0, 0, 8], fov: 50 }}>
+        <Canvas camera={{ position: [0, 0, 10], fov: 45 }}>
           <AtomScene />
         </Canvas>
       </div>

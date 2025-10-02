@@ -1,106 +1,99 @@
-import { useEffect, useState } from "react";
-
 export function AtomLogo() {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   return (
-    <div className="relative flex items-center justify-center" style={{ width: '100%', height: '400px' }}>
-      {/* Orbital rings matching electron paths */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        {/* Ring 1 - matches orbit1 */}
-        <div 
-          className="absolute border-2 border-primary/20 rounded-full"
-          style={{
-            width: '600px',
-            height: '600px',
-          }}
-        />
-        
-        {/* Ring 2 - matches orbit2 */}
-        <div 
-          className="absolute border-2 border-primary/20 rounded-full"
-          style={{
-            width: '560px',
-            height: '560px',
-          }}
-        />
-        
-        {/* Ring 3 - matches orbit3 */}
-        <div 
-          className="absolute border-2 border-primary/20 rounded-full"
-          style={{
-            width: '580px',
-            height: '580px',
-          }}
-        />
-      </div>
-
-      {/* Electrons */}
-      {mounted && (
-        <>
-          {/* Electron 1 - cyan */}
-          <div 
-            className="absolute w-6 h-6 rounded-full bg-[hsl(var(--egfp))] shadow-lg animate-orbit-1"
-            style={{
-              animation: 'orbit1 4s linear infinite',
-            }}
+    <div className="relative flex items-center justify-center" style={{ width: '100%', minHeight: '400px', padding: '2rem' }}>
+      {/* Atom SVG - positioned behind text */}
+      <svg 
+        className="absolute inset-0 w-full h-full" 
+        style={{ pointerEvents: 'none', zIndex: 0 }}
+        viewBox="0 0 800 400" 
+        preserveAspectRatio="xMidYMid meet"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        {/* Center point for reference */}
+        <g transform="translate(400, 200)">
+          {/* Elliptical orbit 1 - rotated */}
+          <ellipse
+            cx="0"
+            cy="0"
+            rx="280"
+            ry="120"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            opacity="0.3"
+            transform="rotate(60)"
           />
           
-          {/* Electron 2 - coral/pink */}
-          <div 
-            className="absolute w-5 h-5 rounded-full bg-[hsl(var(--mrfp1))] shadow-lg animate-orbit-2"
-            style={{
-              animation: 'orbit2 3s linear infinite',
-            }}
+          {/* Elliptical orbit 2 - rotated differently */}
+          <ellipse
+            cx="0"
+            cy="0"
+            rx="280"
+            ry="120"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            opacity="0.3"
+            transform="rotate(-60)"
           />
           
-          {/* Electron 3 - yellow */}
-          <div 
-            className="absolute w-5 h-5 rounded-full bg-[hsl(var(--accent))] shadow-lg animate-orbit-3"
-            style={{
-              animation: 'orbit3 5s linear infinite',
-            }}
+          {/* Elliptical orbit 3 - horizontal */}
+          <ellipse
+            cx="0"
+            cy="0"
+            rx="280"
+            ry="120"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            opacity="0.3"
+            transform="rotate(0)"
           />
-        </>
-      )}
+          
+          {/* Center nucleus */}
+          <circle
+            cx="0"
+            cy="0"
+            r="20"
+            fill="#78DCE8"
+          />
+          
+          {/* Electron 1 - coral/pink on orbit 1 */}
+          <circle
+            cx="240"
+            cy="-60"
+            r="12"
+            fill="#FF9B85"
+          />
+          
+          {/* Electron 2 - yellow on orbit 2 */}
+          <circle
+            cx="-200"
+            cy="80"
+            r="12"
+            fill="#FFE66D"
+          />
+          
+          {/* Electron 3 - cyan on orbit 3 */}
+          <circle
+            cx="180"
+            cy="90"
+            r="12"
+            fill="#78DCE8"
+          />
+        </g>
+      </svg>
 
-      {/* Nucleus - Synthesis text */}
+      {/* Synthesis text - positioned above SVG */}
       <h1 className="relative z-10 text-8xl md:text-9xl font-bold text-foreground font-inter tracking-tight">
         Synthesis
       </h1>
-
-      <style>{`
-        @keyframes orbit1 {
-          0% {
-            transform: rotateZ(0deg) translateX(300px) rotateZ(0deg);
-          }
-          100% {
-            transform: rotateZ(360deg) translateX(300px) rotateZ(-360deg);
-          }
-        }
-        
-        @keyframes orbit2 {
-          0% {
-            transform: rotateZ(120deg) translateX(280px) rotateZ(-120deg);
-          }
-          100% {
-            transform: rotateZ(480deg) translateX(280px) rotateZ(-480deg);
-          }
-        }
-        
-        @keyframes orbit3 {
-          0% {
-            transform: rotateZ(240deg) translateX(290px) rotateZ(-240deg);
-          }
-          100% {
-            transform: rotateZ(600deg) translateX(290px) rotateZ(-600deg);
-          }
-        }
-      `}</style>
     </div>
   );
 }

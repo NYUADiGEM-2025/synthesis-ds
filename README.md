@@ -1,73 +1,123 @@
-# Welcome to your Lovable project
+# Synthesis — Central Dogma Simulator
 
-## Project info
+*A calm, beginner-friendly web app for teaching gene expression through synthetic biology.*
 
-**URL**: https://lovable.dev/projects/20dd78a1-5d6a-4e28-ae9c-65e576532de1
+**Live app:** https://synthesis-ds.art/  
+**Source code:** <REPO_URL>
 
-## How can I edit this code?
+---
 
-There are several ways of editing your application.
+## What’s new?
+- Three reporter CDS: **EGFP**, **mRFP1**, **mTagBFP2**
+- Visual **plasmid workspace** (pSB1C3) with drag-and-drop parts
+- Guided run with **status steps**, **progress**, Pause/Reset, and toasts
+- Clean **Parts Library** + “How it works” quick start
+- Reproducible local setup (Vite + React + TypeScript + Tailwind)
 
-**Use Lovable**
+> Note: live step-by-step animation and advanced editing (promoters/RBS/terminators, rare-disease CDS) are in progress.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/20dd78a1-5d6a-4e28-ae9c-65e576532de1) and start prompting.
+---
 
-Changes made via Lovable will be committed automatically to this repo.
+## Table of Contents
+- [Overview](#overview)
+- [Features](#features)
+- [Installation](#installation)
+  - [Frontend](#frontend)
+- [Usage](#usage)
+- [Reproducibility & Testing](#reproducibility--testing)
+- [Tech Stack](#tech-stack)
+- [Contributing](#contributing)
 
-**Use your preferred IDE**
+---
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## Overview
+**Synthesis** makes the central dogma (**DNA → RNA → Protein**) interactive using familiar **synthetic-biology** primitives. Learners drag a coding sequence (CDS) onto a plasmid (**pSB1C3**), then run a guided simulation with clear text that ties actions to transcription and translation. The app is designed for classrooms, workshops, and fast team onboarding.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+---
 
-Follow these steps:
+## Features
+- **Plasmid canvas** with labeled segments and origin of replication
+- **Parts Bin** with color-coded CDS (EGFP/mRFP1/mTagBFP2)
+- **Guided run**: progress bar, step text, Pause/Reset, action toasts
+- **Target Proteins** panel synced with current selections
+- **Accessible UI**: keyboard focus states, high-contrast defaults
+- **Zero-install use** at https://synthesis-ds.art/
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+*Roadmap:* animated molecular steps, promoters/RBS/terminators with strengths, sequence edits, rare-disease module, presets & save/load.
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+---
 
-# Step 3: Install the necessary dependencies.
-npm i
+## Installation
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+Prefer the hosted site? Just go to **https://synthesis-ds.art/**.  
+For local development, follow the steps below.
+
+### Frontend
+```bash
+# 1) Clone
+git clone <REPO_URL>
+cd <REPO_DIR>
+
+# 2) Install deps
+npm install
+
+# 3) Run the dev server (Vite)
 npm run dev
 ```
+The dev server typically runs at http://localhost:5173 (Vite default).
 
-**Edit a file directly in GitHub**
+---
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Usage
 
-**Use GitHub Codespaces**
+1. Open **Simulator** from the navbar (or click **Launch Simulator** on Home).
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+2. **Drag** a CDS (**EGFP / mRFP1 / mTagBFP2**) from the **Parts Bin** onto the plasmid ring.  
+   - The **Start Simulation** button enables when **≥ 1** CDS is present.
 
-## What technologies are used for this project?
+3. Click **Start Simulation** to follow the guided steps; use **Pause / Reset** anytime.
 
-This project is built with:
+4. Add/remove CDS to compare **green/red/blue** reporters.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+5. Use **Clear All CDS** to reset the workspace.
 
-## How can I deploy this project?
+---
 
-Simply open [Lovable](https://lovable.dev/projects/20dd78a1-5d6a-4e28-ae9c-65e576532de1) and click on Share -> Publish.
+## Reproducibility & Testing
 
-## Can I connect a custom domain to my Lovable project?
+- All content and logic are versioned in this repo.
+- Deterministic UI states for common flows (add, remove, clear, run).
+- Manual sanity checks: disabled → enabled button gating, selection sync between panels, consistent labels/colors.
+- Build artifacts reproducible via:
 
-Yes, you can!
+```bash
+npm ci
+npm run build
+```
+---
+## Tech Stack
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+- **TypeScript + React (TSX)** — app logic and components  
+- **Vite** — fast dev server and production bundling  
+- **Tailwind CSS** — styles, theming, and responsive layout  
+- **shadcn/ui** — accessible React primitives themed with Tailwind  
+- **SVG** — plasmid ring, labeled gene segments, subtle ornaments
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+---
+## Contributing
+
+1. **Fork** the repo.
+
+2. **Create a feature branch:**
+   ```bash
+   git checkout -b feat/your-feature
+   ```
+3. **Commit with a clear message:**
+   ```bash
+   git commit -m "feat(simulator): add pause state"
+   ```
+4. **Push and open a PR:**
+   ```bash
+   git push origin feat/your-feature
+   ```
+

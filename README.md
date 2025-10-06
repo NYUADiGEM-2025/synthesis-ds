@@ -1,4 +1,4 @@
-# Synthesis — Central Dogma Simulator
+# Synthesis — Central Dogma & SynBio Simulator
 
 *A calm, beginner-friendly web app for teaching gene expression through synthetic biology.*
 

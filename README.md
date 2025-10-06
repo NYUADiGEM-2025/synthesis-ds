@@ -3,7 +3,7 @@
 *A calm, beginner-friendly web app for teaching gene expression through synthetic biology.*
 
 **Live app:** https://synthesis-ds.art/  
-**Source code:** <REPO_URL>
+**Source code:** https://github.com/NYUADiGEM-2025/synthesis-ds
 
 ---
 
